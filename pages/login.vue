@@ -4,17 +4,15 @@ import { reactive } from "vue";
 import { Partner } from "~/models/Partner";
 import { useAuth } from "~/composables/useAuth";
 
+const {login} = useAuth();
 
 const partner = reactive<Partner>(new Partner())
-const {stateAuth, login} = useAuth();
 
 // Hàm xử lý login
 const handleLogin = () =>{
     console.log(partner);
     login(partner);
 }
-
-
 
 </script>
 <template>

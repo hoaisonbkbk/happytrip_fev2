@@ -1,5 +1,6 @@
 import type { IPartner } from '~/types/Partner';
 import { type ITokenInfo } from './../types/TokenInfo';
+import { RestApi } from '~/services/RestAPIService';
 
 // Viết composables useAuth
 // Kiểm tra code composable useAuth
@@ -14,7 +15,7 @@ export const useAuth = () => {
         isAuthenticated: false,
         TokenInfo: {} as ITokenInfo
     });
-    const { restApi } = useApi();
+  
     // Function đăng nhập
     const login = async (partner: IPartner) => {
         // Kiểm tra thông tin đăng nhập
@@ -23,8 +24,9 @@ export const useAuth = () => {
         }
         // Trường hợp đầy đủ thông tin thì gọi đến API
 
+
         try {
-            const data = await restApi<ITokenInfo>('/partner/login', 'POST', {
+            const data = await RestApi<ITokenInfo>('/partner/login', 'POST', {
                 body: partner,
                 headers: {
                     'Content-Type': 'application/json'
@@ -36,7 +38,7 @@ export const useAuth = () => {
             }
             // Giá trị stateAuth dùng cho phep truy cập
             stateAuth.isAuthenticated = true
-            stateAuth.TokenInfo = data.value || {}
+            stateAuth.TokenInfo = data || {}
         } catch (error) {
             throw new Error(error instanceof Error ? error.message : 'Đăng nhập thất bại.');
         }

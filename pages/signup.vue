@@ -1,0 +1,40 @@
+<script setup>
+definePageMeta({ layout: "auth" });
+</script>
+<template>
+    <div class="card-body text-center">
+        <div class="mb-4">
+            <img class="brand" src="assets/img/bootstraper-logo.png" alt="bootstraper logo">
+        </div>
+        <h6 class="mb-4 text-muted">Create new account</h6>
+        <form action="" method="">
+            <div class="mb-3 text-start">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" placeholder="Enter your name" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" placeholder="Enter your password" required>
+            </div>
+            <!-- 
+                        <div class="mb-3">
+                            <input type="password" class="form-control" placeholder="Confirm password" required>
+                        </div> 
+                        -->
+            <div class="mb-3 text-start">
+                <div class="form-check">
+                    <input class="form-check-input" name="confirm" type="checkbox" value="" id="check1">
+                    <label class="form-check-label" for="check1">
+                        I agree to the <a href="#" tabindex="-1">terms and policy</a>.
+                    </label>
+                </div>
+            </div>
+            <button class="btn btn-primary mb-4" style="width:100%">Register</button>
+        </form>
+        <p class="mb-0 text-muted">Allready have an account? <a href="login.html">Log in</a></p>
+    </div>
+</template>

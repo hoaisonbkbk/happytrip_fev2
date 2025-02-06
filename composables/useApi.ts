@@ -41,7 +41,7 @@ export function useApi() {
             return await $fetch<T>(url, {
                 method,
                 headers,
-                body: ["POST", "PUT", "PATCH"].includes(method) ? options.body : undefined,
+                body: ["POST", "PUT", "PATCH"].includes(method) ? JSON.stringify(options.body) : undefined,
             });
         } catch (error: any) {
             console.error("API Error:", error);

@@ -3,10 +3,11 @@ definePageMeta({ layout: "auth" });
 import { reactive } from "vue";
 import { Partner } from "~/models/Partner";
 import { useAuth } from "~/composables/useAuth";
+import type { IPartner } from "~/types/Partner";
 
 const {login} = useAuth();
 
-const partner = reactive<Partner>(new Partner())
+const partner = reactive<IPartner>(new Partner())
 
 // Hàm xử lý login
 const handleLogin = () =>{

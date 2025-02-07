@@ -7,12 +7,13 @@ import type { IPartner } from "~/types/Partner";
 
 const {login} = useAuth();
 
-const partner = reactive<IPartner>(new Partner())
+const partner = reactive<IPartner>(new Partner({phone:"0859244229", password:"1234567"}))
 
 // Hàm xử lý login
-const handleLogin = () =>{
-    console.log(partner);
-    login(partner);
+const handleLogin = async () =>{
+   await login(partner);
+   // $showToast("Đăng nhập thành công. Chờ chuyển hướng..","success");
+    //navigateTo("/");
 }
 
 </script>

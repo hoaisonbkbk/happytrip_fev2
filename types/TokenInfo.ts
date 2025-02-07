@@ -1,11 +1,9 @@
 export interface ITokenInfo {
-    AccessToken?: string;
-    Id?: string;
-    FirtName?: string;
-    LastName?: string;
-    Phone?: string;
-    FullName?: string;
-    TokenType?: string;
-    TransportType?: string;
-    Roles?: string[];
+    accessToken?: string;
+    id?: string;
+    phone?: string;
+    fullName?: string;
+    tokenType?: string;
+    transportType?: string;
+    roles?: string[];
 }

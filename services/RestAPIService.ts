@@ -38,7 +38,19 @@ export const RestApi = async <T>(
             body: ["POST", "PUT", "PATCH"].includes(method) ? JSON.stringify(options.body) : undefined,
         });
     } catch (error: any) {
-        console.error("API Error:", error);
-        throw error;
+
+        // ✅ Kiểm tra lỗi trả về từ API
+        if (error.response) {
+            throw {
+                status: error.response.status,
+                message: error.response._data || "Lỗi từ máy chủ!",
+            }
+        }
+        // Xử lý lỗi mạng không có response
+        throw {
+            status: 500,
+            message: "Lỗi máy chủ, vui lòng thử lại!"
+        }
+
     }
 }

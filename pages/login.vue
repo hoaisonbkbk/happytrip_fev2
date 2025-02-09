@@ -25,7 +25,10 @@ const handleLogin = async () =>{
         <h6 class="mb-4 text-muted">Đăng nhập Happytrip System</h6>
         <div class="mb-3 text-start">
             <label for="tel" class="form-label">Số điện thoại</label>
-            <input type="tel" class="form-control" v-model="partner.phone" placeholder="Enter your phone" required>
+            <input type="tel" 
+                class="form-control" 
+                v-model="partner.phone" 
+                placeholder="Enter your phone" required>
         </div>
         <div class="mb-3 text-start">
             <label for="password" class="form-label">Mật khẩu</label>

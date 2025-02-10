@@ -20,7 +20,7 @@
                                 <tr>
                                     <th class="px-4 py-2" style="width:200px">Mã hãng</th>
                                     <th class="px-4 py-2" style="width:70px">Tên hãng</th>
-                                    <th class="px-4 py-2" >Danh sách xe</th>
+                                    <th class="px-4 py-2">Danh sách xe</th>
                                     <th class="px-4 py-2" style="width:100px">S.lượng</th>
                                     <th class="px-4 py-2">Thao tác</th>
                                 </tr>
@@ -33,7 +33,7 @@
                                     <td class="px-4 py-2">
                                         {{ transportStore.FixTenXe(transport).name }}
                                     </td>
-                                    <td class="px-4 py-2" >
+                                    <td class="px-4 py-2">
                                         {{ transportStore.FixTenXe(transport).count }}
                                     </td>
                                     <td class="px-4 py-2">
@@ -51,7 +51,7 @@
                                                         Xem chi tiết
                                                     </a>
                                                 </li>
-                                               
+
                                                 <li>
                                                     <a class="dropdown-item text-danger" href="#"
                                                         @click.prevent="deleteItem(transport.id)">
@@ -67,17 +67,14 @@
                                 <template v-for="item in transportStore.state.transports" :key="'details-' + item.id">
                                     <tr v-if="expandedRows.includes(item.id)">
                                         <td colspan="3">
-
                                             <DetailList :ten_xe="item.ten_xe" />
                                         </td>
                                     </tr>
                                 </template>
-
-
                             </tbody>
                         </table>
                         <DetailModal ref="modalRef" :item-id="selectedItemId" />
-                       
+
                         <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
                             v-model:limit="limitSelected" v-model:currentPage="currentPage"
                             :totalPages="transportStore.state.totalPages"
@@ -94,7 +91,7 @@
 
 <script setup lang="ts">
 import type { ITransportSystemFilter } from '~/types/TransportSystem';
-import DetailList from '~/components/transportsystem/DetailList.vue';   
+import DetailList from '~/components/transportsystem/DetailList.vue';
 import DetailModal from '~/components/transportsystem/DetailModal.vue';
 import type DetailModal1 from '~/components/transportsystem/DetailModal1.vue';
 

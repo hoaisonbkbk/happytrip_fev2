@@ -93,7 +93,7 @@
 import type { ITransportSystemFilter } from '~/types/TransportSystem';
 import DetailList from '~/components/transportsystem/DetailList.vue';
 import DetailModal from '~/components/transportsystem/DetailModal.vue';
-import type DetailModal1 from '~/components/transportsystem/DetailModal1.vue';
+
 
 // Sử dụng layout dashboard
 definePageMeta({

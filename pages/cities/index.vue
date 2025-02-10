@@ -20,14 +20,17 @@
                                 <tr>
                                     <th class="px-4 py-2" style="width:200px">Tên thành phố</th>
                                     <th class="px-4 py-2" style="width:70px">S/lượng</th>
-                                    <th class="px-4 py-2" style="width:170px">Trạng thái</th>
-                                    <th class="px-4 py-2">Thao tác</th>
+                                    <th class="px-4 py-2">Danh sách huyện</th>
+                                    <th class="px-4 py-2" style="width:150px">Trạng thái</th>
+
+                                    <th class="px-4 py-2" style="width:150px">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="city in cityStore.state.cities" :key="city.id">
                                     <td class="px-4 py-2">{{ city.name }}</td>
-                                    <td class="px-4 py-2">{{ cityStore.FixDistrictCount(city) }}</td>
+                                    <td class="px-4 py-2">{{ cityStore.FixDistrict(city).count }}</td>
+                                    <td class="px-4 py-2">{{ cityStore.FixDistrict(city).name }}</td>
                                     <td class="px-4 py-2">{{ cityStore.FixStatus(city.status) }}</td>
                                     <td class="px-4 py-2">
                                         <!-- Thêm các nút thao tác nếu cần -->

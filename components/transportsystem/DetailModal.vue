@@ -27,6 +27,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="hide">Đóng</button>
+                    <button type="button" class="btn btn-primary" @click="handleSave">Save</button>
                 </div>
             </div>
         </div>
@@ -35,7 +36,6 @@
 
 <script setup lang="ts">
 import { onMounted, nextTick } from 'vue';
-import { TransportSystem } from '~/models/TransportSystem';
 import type { ITransportSystem } from '~/types/TransportSystem';
 
 const props = defineProps<{
@@ -56,7 +56,12 @@ onMounted(() => {
     });
 });
 
+const handleSave = () => {
+    console.log('save');
+}
+
 // Theo dõi khi itemId thay đổi
+
 watch(() => props.itemId, async (newId) => {
     if (newId) {
         await fetchDetail(newId);

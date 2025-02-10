@@ -20,20 +20,21 @@
                                 <tr>
                                     <th class="px-4 py-2" style="width:200px">Mã hãng</th>
                                     <th class="px-4 py-2" style="width:70px">Tên hãng</th>
-                                    <th class="px-4 py-2" style="width:170px">Danh sách xe</th>
+                                    <th class="px-4 py-2" >Danh sách xe</th>
+                                    <th class="px-4 py-2" style="width:100px">S.lượng</th>
                                     <th class="px-4 py-2">Thao tác</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 <tr v-for="transport in transportStore.state.transports || []" :key="transport.id">
                                     <td class="px-4 py-2">{{ transport.short_id }}</td>
                                     <td class="px-4 py-2">{{ transport.hang_xe }}</td>
                                     <td class="px-4 py-2">
-                                        <button class="btn btn-outline-primary btn-sm"
-                                            @click="toggleDetails(transport.id ?? '')">
-                                            {{ expandedRows.includes(transport.id ?? '') ? "Ẩn" : "Xem chi tiết"
-                                            }}
-                                        </button>
+                                        {{ transportStore.FixTenXe(transport).name }}
+                                    </td>
+                                    <td class="px-4 py-2" >
+                                        {{ transportStore.FixTenXe(transport).count }}
                                     </td>
                                     <td class="px-4 py-2">
                                         <!-- Dropdown menu -->
@@ -50,12 +51,7 @@
                                                         Xem chi tiết
                                                     </a>
                                                 </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="#"
-                                                        @click.prevent="updateItem(transport.id)">
-                                                        Cập nhật
-                                                    </a>
-                                                </li>
+                                               
                                                 <li>
                                                     <a class="dropdown-item text-danger" href="#"
                                                         @click.prevent="deleteItem(transport.id)">
@@ -81,11 +77,7 @@
                             </tbody>
                         </table>
                         <DetailModal ref="modalRef" :item-id="selectedItemId" />
-                        <UpdateModal 
-                            ref="updateModalRef" 
-                            :item-id="selectedItemId"
-                            @update:success="handleUpdateSuccess" 
-                        />
+                       
                         <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
                             v-model:limit="limitSelected" v-model:currentPage="currentPage"
                             :totalPages="transportStore.state.totalPages"
@@ -104,7 +96,7 @@
 import type { ITransportSystemFilter } from '~/types/TransportSystem';
 import DetailList from '~/components/transportsystem/DetailList.vue';   
 import DetailModal from '~/components/transportsystem/DetailModal.vue';
-import UpdateModal from '~/components/transportsystem/UpdateModal.vue';
+
 // Sử dụng layout dashboard
 definePageMeta({
     layout: 'dashboard'
@@ -185,14 +177,6 @@ const viewDetails = (id: string) => {
     });
 };
 
-// Xử lý khi chọn "Cập nhật"
-const updateItem = (id: string) => {
-    selectedItemId.value = id;
-    nextTick(() => {
-        updateModalRef.value?.show();
-    });
-    openDropdown.value = null;
-};
 
 // Xử lý khi chọn "Xóa"
 const deleteItem = (id: string) => {

@@ -59,9 +59,17 @@ export const useCity = () => {
             };
         }
     }
-    const FixDistrictCount = (city:ICity) =>{
-        if(!city.districts || city.districts.length === 0) return 0;
-        return city.districts.length;
+    const FixDistrict = (city:ICity) =>{
+        if(!city.districts || city.districts.length === 0) {
+            return {
+                count : 0,
+                name : ''
+            }
+        }
+        return {
+            count : city.districts.length,
+            name : city.districts.map(district => district.name).join(', ')
+        }
     }
     // Hàm xử lý trạng thái
     const FixStatus = (status:boolean) =>{
@@ -69,7 +77,7 @@ export const useCity = () => {
         if(status) return 'Hoạt động';
         return 'Không hoạt động';
     }
-    return { state, GetList, FixDistrictCount, FixStatus }
+    return { state, GetList, FixDistrict, FixStatus }
 
 
 }

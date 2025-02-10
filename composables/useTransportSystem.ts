@@ -55,10 +55,23 @@ export const useTransportSystem = () => {
                 message: error.message || "Lỗi không xác định!"
             }
         }
+    }
 
-
+    // Đếm số lượng hãng xe và trả về danh sách hãng xe
+    const FixTenXe = (transport:ITransportSystem) => {
+        if(!transport.ten_xe){
+            return {
+                count : 0,
+                name :''
+            }
+        }
+        return {
+            count : transport.ten_xe.length,
+            name : transport.ten_xe.join(', ')
+        }
     }
     // Lấy chi tiết
+
     const getDetail = async (id: string) => {
         state.isLoading = true;
         try {
@@ -93,7 +106,7 @@ export const useTransportSystem = () => {
             };
         }
     }
-    return { state, getList, getDetail }
+    return { state, getList, getDetail,FixTenXe }
 
 
 }

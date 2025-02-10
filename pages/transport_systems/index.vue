@@ -96,6 +96,7 @@
 import type { ITransportSystemFilter } from '~/types/TransportSystem';
 import DetailList from '~/components/transportsystem/DetailList.vue';   
 import DetailModal from '~/components/transportsystem/DetailModal.vue';
+import type DetailModal1 from '~/components/transportsystem/DetailModal1.vue';
 
 // Sử dụng layout dashboard
 definePageMeta({
@@ -116,8 +117,8 @@ const expandedRows = ref<string[]>([]);
 //--
 const openDropdown = ref(null);
 const selectedItemId = ref<string | null>(null);
-const modalRef = ref<InstanceType<typeof DetailModal> | null>(null);
-const updateModalRef = ref<InstanceType<typeof UpdateModal> | null>(null);
+const modalRef = ref<InstanceType<typeof DetailModal1> | null>(null);
+
 
 // Sự kiện thay đổi limit
 const handleLimitChange = (limit: number) => {

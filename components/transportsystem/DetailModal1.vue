@@ -1,8 +1,0 @@
-<template>
-    <BaseModal
-        
-    >
-    </BaseModal>>
-</template>
-
-

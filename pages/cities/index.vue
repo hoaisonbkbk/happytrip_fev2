@@ -34,12 +34,34 @@
                                     <td class="px-4 py-2">{{ cityStore.FixStatus(city.status) }}</td>
                                     <td class="px-4 py-2">
                                         <!-- Thêm các nút thao tác nếu cần -->
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
+                                                @click="toggleDropdown(city.id)"
+                                                :aria-expanded="openDropdown === city.id">
+                                                Hành động
+                                            </button>
+                                            <ul class="dropdown-menu show" v-if="openDropdown === city.id">
+                                                <li>
+                                                    <a class="dropdown-item" href="#"
+                                                        @click.prevent="viewDetails(city.id)">
+                                                        Xem chi tiết
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a class="dropdown-item text-danger" href="#"
+                                                        @click.prevent="deleteItem(city.id)">
+                                                        Xóa
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
 
                             </tbody>
                         </table>
-
+                        <DetailModal :item-id="selectedItemId" />
                         <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
                             v-model:limit="limitSelected" v-model:currentPage="currentPage" :totalPages="totalPages"
                             :totalArrayLength="cityStore.state.cities.length" :totalRows="cityStore.state.totalRows" />
@@ -55,12 +77,14 @@
 <script setup lang="ts">
 
 import type { ICityFilter } from "~/types/City";
-
+import DetailModal from "~/components/city/DetailModal.vue";
 
 const cityStore = useCity();
 const currentPage = ref(1);
 const limitSelected = ref(10);
 const filter = ref({} as ICityFilter);
+const openDropdown = ref(null);
+const selectedItemId = ref<string | null>(null);
 
 // Sử dụng layout dashboard
 definePageMeta({
@@ -114,4 +138,25 @@ onMounted(() => {
     fetchData();
 });
 
+// Toggle dropdown menu
+const toggleDropdown = (id: string) => {
+    if (openDropdown.value === id) {
+        openDropdown.value = null; // Đóng dropdown
+    } else {
+        openDropdown.value = id; // Mở dropdown
+    }
+};
+
+// Xử lý khi chọn "Xem chi tiết"
+const viewDetails = (id: string) => {
+    selectedItemId.value = id;
+    
+};
+
+
+// Xử lý khi chọn "Xóa"
+const deleteItem = (id: string) => {
+    console.log(id);
+    openDropdown.value = null;
+};
 </script>

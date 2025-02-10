@@ -73,8 +73,8 @@
                                 </template>
                             </tbody>
                         </table>
-                        <DetailModal ref="modalRef" :item-id="selectedItemId" />
-
+                        <!-- <DetailModal ref="modalRef" :item-id="selectedItemId" /> -->
+                        <TransportDetailModal :item-id="selectedItemId" />
                         <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
                             v-model:limit="limitSelected" v-model:currentPage="currentPage"
                             :totalPages="transportStore.state.totalPages"
@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import type { ITransportSystemFilter } from '~/types/TransportSystem';
 import DetailList from '~/components/transportsystem/DetailList.vue';
-import DetailModal from '~/components/transportsystem/DetailModal.vue';
+
 
 
 // Sử dụng layout dashboard
@@ -114,7 +114,7 @@ const expandedRows = ref<string[]>([]);
 //--
 const openDropdown = ref(null);
 const selectedItemId = ref<string | null>(null);
-const modalRef = ref<InstanceType<typeof DetailModal1> | null>(null);
+
 
 
 // Sự kiện thay đổi limit
@@ -129,15 +129,7 @@ const handlePageChange = (page: number) => {
     fetchData();
 }
 // Hàm con xử lý lấy danh sách hãng xe
-// Toggle hiển thị chi tiết
-const toggleDetails = (id: any) => {
-    console.log(id);
-    if (expandedRows.value.includes(id)) {
-        expandedRows.value = expandedRows.value.filter((rowId) => rowId !== id);
-    } else {
-        expandedRows.value.push(id);
-    }
-};
+
 
 const fetchData = async () => {
     try {
@@ -170,9 +162,7 @@ const toggleDropdown = (id: string) => {
 // Xử lý khi chọn "Xem chi tiết"
 const viewDetails = (id: string) => {
     selectedItemId.value = id;
-    nextTick(() => {
-        modalRef.value?.show();
-    });
+    
 };
 
 
@@ -182,8 +172,5 @@ const deleteItem = (id: string) => {
     openDropdown.value = null;
 };
 
-const handleUpdateSuccess = () => {
-    // Refresh data sau khi cập nhật thành công
-    fetchData();
-};
+
 </script>

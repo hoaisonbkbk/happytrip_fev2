@@ -5,11 +5,13 @@ export const useCity = () => {
         cities: [] as ICity[],
         isLoading: false,
         totalRows: 0,
-        page:1,
-        limit:10
+        page: 1,
+        limit: 10,
+        cityDetail: {} as ICity
     });
     const GetList = async (page: number, limit: number, fields: string, filter: ICityFilter) => {
         state.isLoading = true
+
         try {
             // Đọc thông tin access token từ cookies
             const accessToken = (useCookie('auth_partner_token')?.value ?? "") as string;
@@ -28,8 +30,8 @@ export const useCity = () => {
                     'Authorization': `Bearer ${accessToken}`
                 }
             });
-            if(!response || !response.data){
-                throw{
+            if (!response || !response.data) {
+                throw {
                     status: 400,
 
                     message: "Không tìm thấy dữ liệu"
@@ -42,15 +44,7 @@ export const useCity = () => {
             state.isLoading = false;
             state.page = page;
             state.limit = limit;
-            // if(response == null || response.data.value.status !== 200){
-            //     throw {
-            //         status: response.status,
-            //         message: response.statusText
-            //     };
-            // }
 
-            // state.cities = response.data.data.data
-            // state.isLoading = false
         } catch (error: any) {
             state.isLoading = false
             throw {
@@ -59,25 +53,59 @@ export const useCity = () => {
             };
         }
     }
-    const FixDistrict = (city:ICity) =>{
-        if(!city.districts || city.districts.length === 0) {
+    const FixDistrict = (city: ICity) => {
+        if (!city.districts || city.districts.length === 0) {
             return {
-                count : 0,
-                name : ''
+                count: 0,
+                name: ''
             }
         }
         return {
-            count : city.districts.length,
-            name : city.districts.map(district => district.name).join(', ')
+            count: city.districts.length,
+            name: city.districts.map(district => district.name).join(', ')
         }
     }
     // Hàm xử lý trạng thái
-    const FixStatus = (status:boolean) =>{
-        if(status === null) return 'Không xác định';
-        if(status) return 'Hoạt động';
+    const FixStatus = (status: boolean) => {
+        if (status === null) return 'Không xác định';
+        if (status) return 'Hoạt động';
         return 'Không hoạt động';
     }
-    return { state, GetList, FixDistrict, FixStatus }
+
+    const GetDetail = async (id: string) => {
+        state.isLoading = true;
+        try {
+            const accessToken = (useCookie('auth_partner_token')?.value ?? "") as string;
+            const response = await $fetch<ICity>('/api/city/detail', {
+                method: 'GET',
+                query: {
+                    id: id
+                },
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+
+            });
+            if (!response) {
+                throw {
+                    status: 400,
+                    message: "Không tìm thấy dữ liệu"
+                }
+            }
+            state.cityDetail = response;
+            state.isLoading = false;
+        } catch (error: any) {
+            state.isLoading = false;
+            throw {
+                status: error.status || 500,
+                message: error.message || "Lỗi không xác định!"
+            }
+        }
+
+
+    }
+    return { state, GetList, FixDistrict, FixStatus, GetDetail }
+
 
 
 }

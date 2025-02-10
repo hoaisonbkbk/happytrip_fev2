@@ -3,7 +3,7 @@ import { NuxtLink } from '#components';
 
 </script>
 <template>
-    <nav id="sidebar" class="active">
+    <nav id="sidebar">
         <div class="sidebar-header">
             <img src="assets/img/bootstraper-logo.png" alt="bootraper logo" class="app-logo">
         </div>

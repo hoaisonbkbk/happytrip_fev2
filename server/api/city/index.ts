@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
                 message: "Chưa cung cấp dữ liệu query"
             }
         }
+        console.log('body',body);
         // Gửi dữ liệu về server
         const response = await CityService.GetListWithFilter(headers, query, body);
         return response;

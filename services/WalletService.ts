@@ -7,9 +7,10 @@ export class WalletService {
     : Promise<IListWallet> {
         try {
             var rs =  RestApi<IListWallet>('/wallet/list', 'POST', { headers: headers, query: query, body: filter });
+           
             return rs;
         } catch (error: any) {
-            console.error(error.response);
+            console.error('error',error.response);
             // ✅ Trả về lỗi có `status` & `message`
             throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
         }

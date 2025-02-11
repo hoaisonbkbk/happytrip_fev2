@@ -26,7 +26,7 @@ export const useWallet = () => {
             // Gọi qua service/api 
             const response = await $fetch<IListWallet>('/api/wallet', {
                 method: 'POST',
-                body: filter,
+                body: JSON.stringify(filter),
                 query: query,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,

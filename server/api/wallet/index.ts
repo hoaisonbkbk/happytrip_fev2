@@ -6,11 +6,11 @@ export default defineEventHandler(async (event) => {
         // Đọc thông tin filter
         var body = await readBody(event);
         var query = await getQuery(event);
-        // Đọc thông tin token từ header bắn đến
-        var token = getHeader(event, 'Authorization') as string;
+        var authorization =  getHeader(event,'Authorization') as string;
+        
         var headers = {
-            'Authorization': token,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: authorization
         }
         // Kiểm tra dữ liệu bắn đến có hợp lệ không
         if(!query) throw createError({
@@ -21,16 +21,15 @@ export default defineEventHandler(async (event) => {
             statusCode: 400,
             statusMessage: "Thiếu thông tin body!"
         });
-        if(!token) throw createError({
-            statusCode: 401,
-            statusMessage: "Thiếu thông tin token!"
-        });
+       
         // Gọi API lấy danh sách
         var rs = await WalletService.GetListWithFilter(headers,query,body);
+        console.log('response',rs);
         if(!rs) throw createError({
             statusCode: 400,
             statusMessage: "Không tìm thấy dữ liệu!"
         });
+        console.log('wallet response',rs);
 
         return rs;
     }catch(error:any){

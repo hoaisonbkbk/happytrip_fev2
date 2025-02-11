@@ -24,7 +24,8 @@ import { NuxtLink } from '#components';
                 <NuxtLink to="/cities"><i class="fas fa-table"></i>Tỉnh thành</NuxtLink>
             </li>
             <li>
-                <a href="charts.html"><i class="fas fa-money-bill"></i>Ví tiền</a>
+                <NuxtLink to="/wallets"><i class="fas fa-money-bill"></i>Ví tiền</NuxtLink>
+                
             </li>
             <li>
                 <a href="icons.html"><i class="fas fa-money-bill-transfer"></i>Quản lý giao dịch</a>

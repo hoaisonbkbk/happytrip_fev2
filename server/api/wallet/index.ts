@@ -21,10 +21,10 @@ export default defineEventHandler(async (event) => {
             statusCode: 400,
             statusMessage: "Thiếu thông tin body!"
         });
-       
+        console.log('query',query);
         // Gọi API lấy danh sách
         var rs = await WalletService.GetListWithFilter(headers,query,body);
-        console.log('response',rs);
+       
         if(!rs) throw createError({
             statusCode: 400,
             statusMessage: "Không tìm thấy dữ liệu!"

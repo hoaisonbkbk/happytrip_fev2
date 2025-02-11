@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { WalletFilter } from '~/models/Wallet';
-import type { IWalletFilter } from '~/types/Wallet';
+
 
 definePageMeta({
     layout: 'dashboard'

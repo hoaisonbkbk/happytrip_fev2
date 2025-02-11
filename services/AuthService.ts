@@ -8,7 +8,7 @@ export class AuthService {
     // Login
     Login(partner: IPartner): Promise<ITokenInfo> {
         try {
-            return RestApi<ITokenInfo>('/partner/login', 'POST', {
+            return RestApi<ITokenInfo>('/admin/login', 'POST', {
                 body: partner,
                 headers: {
                     'Content-Type': 'application/json'

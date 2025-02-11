@@ -7,51 +7,63 @@
                 <option :value="10">10</option>
                 <option :value="20">20</option>
                 <option :value="50">50</option>
-
             </select>
-            <span>Hiển thị {{totalArrayLength }} / {{ totalRows }} kết
-                quả</span>
+            <span>Hiển thị {{totalArrayLength }} / {{ totalRows }} kết quả</span>
         </div>
 
         <div class="flex gap-2">
-            <button class="px-3 py-1 border rounded" 
-                :disabled="currentPage === 1"
-                @click="handlePageChange(currentPage - 1)">
-                Trước
-            </button>
+            <button @click="goToPage(1)" :disabled="currentPage === 1">First</button>
+            <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous</button>
 
+            <span v-for="page in visiblePages" :key="page">
+                <button @click="goToPage(page)" :class="{ active: currentPage === page }">{{ page }}</button>
+            </span>
 
-            <button v-for="page in totalPages" 
-                :key="page" 
-                class="px-3 py-1 border rounded"
-                :class="{ 'bg-blue-500 text-white': page === currentPage }" 
-                @click="handlePageChange(page)">
-                {{ page }}
-            </button>
-
-
-            <button class="px-3 py-1 border rounded" 
-                :disabled="currentPage === totalPages"
-                @click="handlePageChange(currentPage + 1)">
-                Sau
-            </button>
-
+            <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next</button>
+            <button @click="goToPage(totalPages)" :disabled="currentPage === totalPages">Last</button>
         </div>
     </div>
-
 </template>
 
 <script setup lang="ts">
-defineProps({
-    limit: Number,
-    currentPage: Number,
-    totalRows: Number,
-    totalPages: Number,
-    totalArrayLength: Number
-})
+import { computed, defineProps, defineEmits } from 'vue';
 
-const emit = defineEmits(['update:page','update:limit']);
-const handlePageChange = (page:number) => {
-    emit('update:page',page);
-}
+const props = defineProps<{
+    limit: number;
+    currentPage: number;
+    totalRows: number;
+    totalPages: number;
+    totalArrayLength: number;
+}>();
+
+const emit = defineEmits(['update:page', 'update:limit']);
+
+const visiblePages = computed(() => {
+    const pages = [];
+    const startPage = Math.max(1, props.currentPage - 2);
+    const endPage = Math.min(props.totalPages, props.currentPage + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+    }
+
+    return pages;
+});
+
+const goToPage = (page: number) => {
+    if (page >= 1 && page <= props.totalPages) {
+        emit('update:page', page);
+    }
+};
 </script>
+
+<style scoped>
+.pagination {
+    display: flex;
+    gap: 5px;
+}
+
+button.active {
+    font-weight: bold;
+}
+</style>

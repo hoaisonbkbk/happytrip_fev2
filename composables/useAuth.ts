@@ -34,7 +34,7 @@ export const useAuth = () => {
             $showToast("Đăng nhập thành công. Chờ chuyển hướng..", "success");
             authStore.setAuthData(data, data.accessToken || "");
         } catch (error: any) {
-            console.error(error);
+            
             $showToast(error.message, "error");
             return;
         }

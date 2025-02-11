@@ -13,7 +13,7 @@ const partner = reactive<IPartner>(new Partner({phone:"0859244229", password:"12
 const handleLogin = async () =>{
    await login(partner);
    // $showToast("Đăng nhập thành công. Chờ chuyển hướng..","success");
-    //navigateTo("/");
+    navigateTo("/");
 }
 
 </script>

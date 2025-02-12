@@ -1,0 +1,26 @@
+{
+  "admin": [
+    { "name": "Dashboard", "path": "/", "icon":"<i class='fas fa-users'></i>" },
+    { "name": "Quản lý người dùng", "icon":"<i class='fas fa-users'></i>" ,"path": "/users" },
+    { "name": "Quản lý đơn hàng", "icon":"<i class='fas fa-truck'></i>" ,"path": "/orders" },
+    { "name": "Quản lý tỉnh thành", "icon":"<i class='fas fa-map-marker-alt'></i>" ,"path": "/cities" },
+    { "name": "Quản lý hãng xe", "icon":"<i class='fas fa-truck'></i>" ,"path": "/transport_systems" },
+    { "name": "Quản lý tài xế", "icon":"<i class='fas fa-user-tie'></i>" ,"path": "/employees" },
+    { "name": "Quản lý bảng giá", "path": "/prices", "icon": "<i class='fas fa-house-user'></i>" },
+    {
+      "name": "Quản lý hệ thống" ,"icon": "<i class='fas fa-cogs'></i>" ,
+      "children": [
+        { "name": "Cài đặt", "path": "/settings" ,"icon": "<i class='fas fa-cogs'></i>" },
+        { "name": "Nhật ký hệ thống", "path": "/logs" ,"icon": "<i class='fas fa-cogs'></i>" }
+      ]
+    }
+  ],
+  "affiliate": [
+    { "name": "Dashboard", "path": "/dashboard" },
+    { "name": "Báo cáo", "path": "/reports" }
+  ],
+  "driver": [
+    { "name": "Dashboard", "path": "/dashboard" },
+    { "name": "Lịch trình", "path": "/schedule" }
+  ]
+} 

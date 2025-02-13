@@ -7,7 +7,6 @@ export class WalletService {
     : Promise<IListWallet> {
         try {
             var rs =  RestApi<IListWallet>('/wallet/list', 'POST', { headers: headers, query: query, body: filter });
-           
             return rs;
         } catch (error: any) {
             console.error('error',error.response);

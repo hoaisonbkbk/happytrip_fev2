@@ -1,5 +1,6 @@
 import type { IBankInfo } from "./BankInfo";
 import type { ITransport } from "./Transport";
+import type {IPagination} from "~/types/Pagination";
 
 // Thông tin partner
 export interface IPartner {
@@ -26,4 +27,8 @@ export interface IPartnerFilter {
     status?: number;
     transport_type?: number;
     license_plate?: string;
+}
+export interface IListPartner {
+    data?: IPartner[];
+    pagination?: IPagination;
 }

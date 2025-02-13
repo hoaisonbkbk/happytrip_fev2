@@ -56,7 +56,7 @@ const isSubMenuOpen = (name: string) => {
     </nav>
 </template>
 
-<style scoped>
+<style>
 nav ul {
     list-style: none;
     padding: 0;

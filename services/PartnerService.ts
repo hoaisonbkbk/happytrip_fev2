@@ -5,7 +5,8 @@ import type { IBankInfo } from "~/types/BankInfo";
 
 export class PartnerService {
     // Lấy danh sách tài xế
-    GetListWithFilter(headers?: Record<string, string>, query?: Record<string, string>, filter?: Record<string, string>)
+    GetListWithFilter(headers?: Record<string, string>, query?: Record<string, any>, 
+        filter?: Record<string, string>)
         : Promise<IListPartner> {
         try {
             return RestApi("partner/list", "POST", { body: filter, headers: headers, query: query });

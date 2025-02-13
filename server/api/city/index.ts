@@ -5,12 +5,14 @@ export default defineEventHandler(async (event) => {
         
         // Đọc thông tin từ request
         const body = await readBody(event);
+
         // Đọc dữ liệu từ headers request gửi đến. Yêu cầu truy tìm dữ liệu
         const accessToken = event.node.req.headers['authorization'];
         var headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
         }
+        
         // Đọc thông tin query parameters
         const query = getQuery(event);
         // Đọc thiếu thông tin body trên request
@@ -26,7 +28,6 @@ export default defineEventHandler(async (event) => {
                 message: "Chưa cung cấp dữ liệu query"
             }
         }
-        console.log('body',body);
         // Gửi dữ liệu về server
         const response = await CityService.GetListWithFilter(headers, query, body);
         return response;

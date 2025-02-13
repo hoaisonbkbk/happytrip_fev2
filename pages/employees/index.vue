@@ -35,4 +35,5 @@
 definePageMeta({
     layout: 'dashboard'
 })
+
 </script>

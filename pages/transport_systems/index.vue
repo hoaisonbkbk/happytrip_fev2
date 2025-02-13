@@ -37,29 +37,7 @@
                                         {{ transportStore.FixTenXe(transport).count }}
                                     </td>
                                     <td class="px-4 py-2">
-                                        <!-- Dropdown menu -->
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
-                                                @click="toggleDropdown(transport.id)"
-                                                :aria-expanded="openDropdown === transport.id">
-                                                Hành động
-                                            </button>
-                                            <ul class="dropdown-menu show" v-if="openDropdown === transport.id">
-                                                <li>
-                                                    <a class="dropdown-item" href="#"
-                                                        @click.prevent="viewDetails(transport.id)">
-                                                        Xem chi tiết
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a class="dropdown-item text-danger" href="#"
-                                                        @click.prevent="deleteItem(transport.id)">
-                                                        Xóa
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <ButtonDropdown :id="transport.id" @viewDetails="viewDetails" @deleteItem="deleteItem" />
                                     </td>
                                 </tr>
                                 <!-- Chi tiết xe -->
@@ -92,6 +70,7 @@
 <script setup lang="ts">
 import type { ITransportSystemFilter } from '~/types/TransportSystem';
 import DetailList from '~/components/transportsystem/DetailList.vue';
+import ButtonDropdown from '~/components/ui/ButtonDropdown.vue';
 
 
 
@@ -112,7 +91,6 @@ const { $showToast } = useNuxtApp();
 const expandedRows = ref<string[]>([]);
 
 //--
-const openDropdown = ref(null);
 const selectedItemId = ref<string | null>(null);
 
 
@@ -150,15 +128,6 @@ onMounted(() => {
     fetchData();
 });
 
-// Toggle dropdown menu
-const toggleDropdown = (id: string) => {
-    if (openDropdown.value === id) {
-        openDropdown.value = null; // Đóng dropdown
-    } else {
-        openDropdown.value = id; // Mở dropdown
-    }
-};
-
 // Xử lý khi chọn "Xem chi tiết"
 const viewDetails = (id: string) => {
     selectedItemId.value = id;
@@ -169,7 +138,7 @@ const viewDetails = (id: string) => {
 // Xử lý khi chọn "Xóa"
 const deleteItem = (id: string) => {
     console.log(id);
-    openDropdown.value = null;
+    $showToast("Chức năng đang phát triển", "info");
 };
 
 

@@ -32,6 +32,8 @@ export default defineEventHandler(async (event) => {
             }
         }
         var rs = await PartnerService.GetListWithFilter(header, query, body);
+        console.log(rs);
+        return rs;
     } catch (error: any) {
         return {
             status: error.status || 500,

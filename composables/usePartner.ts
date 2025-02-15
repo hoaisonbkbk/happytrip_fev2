@@ -1,4 +1,4 @@
-import type { IPartner, IPartnerFilter } from "~/types/Partner";
+ import type { IPartner, IPartnerFilter } from "~/types/Partner";
 
 export const usePartner = () => {
     const state = reactive({
@@ -35,7 +35,10 @@ export const usePartner = () => {
                     message: 'Không tìm thấy dữ liệu'
                 }
             }
-            state.partners = response;
+
+            state.partners = response.data || [];
+            state.totalPages = response.pagination?.total_page || 1;
+            state.totalRows = response.pagination?.count || 1;
         }catch(error:any){
             throw createError({
                 statusCode: error.response.status,

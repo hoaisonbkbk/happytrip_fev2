@@ -4,7 +4,7 @@
             <h3 class="text-2xl font-bold">Danh sách tài xế</h3>
         </div>
         <div class="card-header">
-            <div class="flex justify-between items-center">Quản lý thành phố</div>
+            <div class="flex justify-between items-center">Quản lý tài xế</div>
         </div>
         <div class="card-body">
             <div class="relative overflow-x-auto">
@@ -22,7 +22,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            {{ state.partners }}
                         </tbody>
                     </table>
                 </div>
@@ -35,5 +35,21 @@
 definePageMeta({
     layout: 'dashboard'
 })
+import {usePartner} from "~/composables/usePartner";
+const {$showToast} = useNuxtApp();
+const {state,getPartner} = usePartner();
 
+const limit = ref(12);
+const page = ref(1);
+const fetchData = async () => {
+    try {
+        await getPartner(page.value,limit.value);
+
+    } catch (error : any) {
+        $showToast(error.message, 'error');
+    }
+}
+onMounted(() => {
+    fetchData();
+})
 </script>

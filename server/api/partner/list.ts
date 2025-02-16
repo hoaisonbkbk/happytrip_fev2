@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
         var body = await readBody(event);
         // Lấy thông tin header
         var token =  getHeader(event, 'Authorization') as string;
+        
         var header = {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -19,19 +20,21 @@ export default defineEventHandler(async (event) => {
                 message: 'Chưa cung cấp dữ liệu query'
             }
         }
+        
         if(!body){
             return {
                 status: 400,
                 message: 'Chưa cung cấp dữ liệu body'
             }
         }
+        
         if(!header){
             return {
                 status: 400,
                 message: 'Chưa cung cấp dữ liệu header'
             }
         }
-        var rs = await PartnerService.GetListWithFilter(header, query, body);
+        return await PartnerService.GetListWithFilter(header, query, body);
     } catch (error: any) {
         return {
             status: error.status || 500,

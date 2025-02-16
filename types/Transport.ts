@@ -7,5 +7,5 @@ export interface ITransport{
     hang_xe?:string;
     ten_xe?:string;
     created_year?:string;
-
+    
 }

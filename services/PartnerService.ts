@@ -9,18 +9,21 @@ export class PartnerService {
         filter?: Record<string, string>)
         : Promise<IListPartner> {
         try {
-            return RestApi("partner/list", "POST", { body: filter, headers: headers, query: query });
+            return  RestApi("/partner/list", "POST", { body: filter, headers: headers, query: query });
         } catch (error: any) {
+            console.log(error);
             // Trả về lỗi có status và message
             throw { status: error.status || 500, message: error.message || "Lỗi không xác định" }
         }
     }
     // Chi tiết tài xế
-    GetDetailById(id: string, headers?: Record<string, string>): Promise<IPartner> {
+   async GetDetailById(id: string, headers?: Record<string, string>): Promise<IPartner> {
         try {
-            return RestApi(`partner/${id}`, "GET", { headers: headers });
+            var rs = await RestApi(`/partner/${id}`, "GET", { headers: headers });
+            return rs as IPartner;
         } catch (error: any) {
             // Trả về lỗi có status và message
+            
             throw { status: error.status || 500, message: error.message || "Lỗi không xác định" }
         }
     }

@@ -14,6 +14,7 @@ export interface IPartner {
     created_at?: string;
     isFreezen?: boolean;
     otp_sms?: string;
+    status_name?:string;
 }
 
 // Bộ lọc partner filter

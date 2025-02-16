@@ -8,13 +8,16 @@
         </div>
         <div class="card-body">
             <div class="relative overflow-x-auto">
-                <div class="table-responsive">
+                <div v-if="loading" class="text-center py-4">
+                    Đang tải...
+                </div>
+                <div v-else class="table-responsive">
                     <table class="w-full text-sm text-left table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th class="px-4 py-2">Tên</th>
                                 <th class="px-4 py-2">Số điện thoại</th>
-
+                               
                                 <th class="px-4 py-2">Biển số</th>
                                 <th class="px-4 py-2">Ngày đăng ký</th>
                                 <th class="px-4 py-2">Trạng thái</th>
@@ -42,6 +45,15 @@
             <EmployeeDetailModal 
                 :itemId="selectedItemId"
             />
+            <BasePagination
+            @update:page="handlePageChange" 
+            @update:limit="handleLimitChange"
+            v-model:limit="limitSelected" 
+            v-model:currentPage="currentPage" 
+            :totalPages="totalPages"
+            :totalArrayLength="state.partners.length" 
+            :totalRows="totalRows"
+            />
         </div>
     </div>
 </template>
@@ -54,8 +66,8 @@ import { PartnerFilter } from '~/models/Partner';
 import ButtonDropdown from '~/components/ui/ButtonDropdown.vue';
     import EmployeeDetailModal from '~/components/employees/EmployeeDetailModal.vue';
 const { $showToast } = useNuxtApp();
-const limit = ref(12);
-const page = ref(1);
+const limitSelected = ref(10);
+const currentPage = ref(1);
 const { state, getPartner } = usePartner();
 const { partners, totalRows, totalPages, loading } = toRefs(state);
 const filter = reactive(new PartnerFilter({ id: null }));
@@ -63,16 +75,24 @@ const selectedItemId = ref();
 
 const fetchData = async () => {
     try {
-
+        await getPartner(currentPage.value, limitSelected.value, filter);
     } catch (error) {
         $showToast(error.message, 'error');
     }
-    await getPartner(page.value, limit.value, filter);
+    
 }
 onMounted(() => {
     fetchData();
 });
+const handlePageChange = (page) => {
+    currentPage.value = page;
+    fetchData();
+}
 
+const handleLimitChange = (limit) => {
+    limitSelected.value = limit;
+    fetchData();
+}
 const viewDetails = (id) => {
     selectedItemId.value = id;
     

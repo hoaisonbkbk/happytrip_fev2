@@ -6,10 +6,14 @@
     @save="handleSave"
     @close="handleClose">
         <template #body>
-            <div v-if="isLoading">Đang tải...</div>
-            <div v-else-if="cityDetail">
-
-                {{ cityDetail }}
+            <div v-if="partnerStore.state.isLoading">Đang tải...</div>
+            <div v-else-if="partnerStore.state.partnerDetail">
+                <p>Id: {{ partnerStore.state.partnerDetail.id }}</p>
+                <p>Full name: {{ partnerStore.state.partnerDetail.full_name }}</p>
+                <p>Phone: {{ partnerStore.state.partnerDetail.phone }}</p>
+                <p>Password: {{ partnerStore.state.partnerDetail.password }}</p>
+                <p>Transport: {{ partnerStore.state.partnerDetail.transport }}</p>
+                <p>Status: {{ partnerStore.state.partnerDetail.status_name }}</p>
             </div>
         </template>
     </BaseModal>
@@ -39,8 +43,6 @@ const fetchDetail = async (id: string) => {
         partnerDetail.value = partnerStore.state.partnerDetail;
     } catch (error: any) {
         $showToast(error.message, 'error');
-    } finally {
-        isLoading.value = false;
     }
 }
 

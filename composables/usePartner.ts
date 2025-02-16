@@ -57,6 +57,7 @@ export const usePartner = () => {
             state.loading = true;
             // Lấy thông tin token từ store
             const accessToken = (useCookie('auth_partner_token')?.value ?? "") as string;
+            //const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjY1YTEwYjM2MTY3ZWI3ZmJkZmM2YzNlMyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IiIsIkZpcnROYW1lIjoiVMOobyIsIkxhc3ROYW1lIjoiVsSDbiIsIkZ1bGxOYW1lIjoiQWRtaW4iLCJQaG9uZSI6IjA4NTkyNDQyMjkiLCJUb2tlblR5cGUiOiJBZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6Im93bmVycyIsIm5iZiI6MTczOTY2OTM2MywiZXhwIjoxNzQyMjYxMzYzfQ.oeQjIal70TFsJa-fI7vPMO9EwfTWAUf1kdvxXJKeuow";
             // Gửi vào server/api để lấy dữ liệu
             const response = await $fetch('/api/partner/detail?id=' + id, {
                 method: 'GET',

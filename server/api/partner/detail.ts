@@ -6,15 +6,16 @@ export default defineEventHandler(async (event) => {
         //const body = await readBody(event);
         const query = getQuery(event);
         const id = query.id as string;
-
-        console.log('idid',id);
+        //
+        const header = getHeaders(event);
+        console.log('header',header);
         // Đọc thông tin token từ header
         const accessToken = getHeader(event, 'Authorization') as string;
         var headers = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `${accessToken}`
         }
-
+     
         // Lấy thông tin dựa vào getDetai
         const response = await PartnerService.GetDetailById(id, headers);
         return response;

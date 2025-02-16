@@ -72,7 +72,7 @@ definePageMeta({
     layout: "dashboard"
 });
 
-
+const {$showToat} = useNuxtApp();
 // Tính tổng số trang
 const totalPages = computed(() => {
     return Math.ceil(cityStore.state.totalRows / limitSelected.value);
@@ -104,7 +104,7 @@ const fetchData = async () => {
     } catch (error: any) {
         // Xử lý lỗi (có thể dùng toast hoặc alert)
         console.error('Lỗi:', error.message);
-
+        $showToast(error.message, 'error');
     }
 };
 

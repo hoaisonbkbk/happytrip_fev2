@@ -4,7 +4,7 @@
             <h3 class="text-2xl font-bold">Danh sách tài xế</h3>
         </div>
         <div class="card-header">
-            <div class="flex justify-between items-center">Quản lý thành phố</div>
+            <div class="flex justify-between items-center">Quản lý tài xế</div>
         </div>
         <div class="card-body">
             <div class="relative overflow-x-auto">
@@ -17,7 +17,7 @@
                             <tr>
                                 <th class="px-4 py-2">Tên</th>
                                 <th class="px-4 py-2">Số điện thoại</th>
-                               
+
                                 <th class="px-4 py-2">Biển số</th>
                                 <th class="px-4 py-2">Ngày đăng ký</th>
                                 <th class="px-4 py-2">Trạng thái</th>
@@ -32,8 +32,7 @@
                                 <td class="px-4 py-2">{{ partner.transport.created_year }}</td>
                                 <td class="px-4 py-2">Kích hoạt</td>
                                 <td class="px-4 py-2">
-                                    <ButtonDropdown :id="partner.id" 
-                                        @viewDetails="viewDetails"
+                                    <ButtonDropdown :id="partner.id" @viewDetails="viewDetails"
                                         @deleteItem="deleteItem" />
                                 </td>
                             </tr>
@@ -42,18 +41,10 @@
                 </div>
 
             </div>
-            <EmployeeDetailModal 
-                :itemId="selectedItemId"
-            />
-            <BasePagination
-            @update:page="handlePageChange" 
-            @update:limit="handleLimitChange"
-            v-model:limit="limitSelected" 
-            v-model:currentPage="currentPage" 
-            :totalPages="totalPages"
-            :totalArrayLength="state.partners.length" 
-            :totalRows="totalRows"
-            />
+            <EmployeeDetailModal :itemId="selectedItemId" />
+            <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
+                v-model:limit="limitSelected" v-model:currentPage="currentPage" :totalPages="totalPages"
+                :totalArrayLength="state.partners.length" :totalRows="totalRows" />
         </div>
     </div>
 </template>
@@ -64,7 +55,7 @@ definePageMeta({
 import { usePartner } from '~/composables/usePartner'
 import { PartnerFilter } from '~/models/Partner';
 import ButtonDropdown from '~/components/ui/ButtonDropdown.vue';
-    import EmployeeDetailModal from '~/components/employees/EmployeeDetailModal.vue';
+import EmployeeDetailModal from '~/components/employees/EmployeeDetailModal.vue';
 const { $showToast } = useNuxtApp();
 const limitSelected = ref(10);
 const currentPage = ref(1);
@@ -79,7 +70,7 @@ const fetchData = async () => {
     } catch (error) {
         $showToast(error.message, 'error');
     }
-    
+
 }
 onMounted(() => {
     fetchData();
@@ -95,7 +86,7 @@ const handleLimitChange = (limit) => {
 }
 const viewDetails = (id) => {
     selectedItemId.value = id;
-    
+
 };
 const deleteItem = (id) => {
     console.log(id);

@@ -1,3 +1,4 @@
+import { useCookie } from "#app";
 import type { IPartner, IPartnerFilter } from "~/types/Partner";
 
 export const usePartner = () => {

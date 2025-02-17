@@ -7,6 +7,8 @@
     { "name": "Quản lý hãng xe", "icon":"<i class='fas fa-truck'></i>" ,"path": "/transport_systems" },
     { "name": "Quản lý tài xế", "icon":"<i class='fas fa-user-tie'></i>" ,"path": "/employees" },
     { "name": "Quản lý bảng giá", "path": "/prices", "icon": "<i class='fas fa-house-user'></i>" },
+    { "name": "Quản lý ví tiền", "path": "/wallets", "icon": "<i class='fas fa-money-bill'></i>" },
+    { "name": "Quản lý giao dịch", "path": "/transactions", "icon": "<i class='fas fa-money-bill'></i>" },
     {
       "name": "Quản lý hệ thống" ,"icon": "<i class='fas fa-cogs'></i>" ,
       "children": [

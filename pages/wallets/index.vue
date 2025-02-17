@@ -34,28 +34,9 @@
                                 <td class="px-4 py-2">{{ wallet.partner_id != '' ? 'Ví đại lý' : 'Ví cá nhân' }}</td>
                                 <td class="px-4 py-2">{{ formatDate(wallet.created_at) }}</td>
                                 <td class="px-4 py-2">
-                                    <div class="dropdown">
-                                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
-                                                @click="toggleDropdown(wallet.id)"
-                                                :aria-expanded="openDropdown === wallet.id">
-                                                Hành động
-                                            </button>
-                                            <ul class="dropdown-menu show" v-if="openDropdown === wallet.id">
-                                                <li>
-                                                    <a class="dropdown-item" href="#"
-                                                        @click.prevent="viewDetails(wallet.id)">
-                                                        Xem chi tiết
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a class="dropdown-item text-danger" href="#"
-                                                        @click.prevent="deleteItem(wallet.id)">
-                                                        Xóa
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    <UiButtonDropdown :id="wallet.id" @viewDetails="viewDetails"
+                                        @deleteItem="deleteItem" />
+                           
                                 </td>
                             </tr>
                         </tbody>

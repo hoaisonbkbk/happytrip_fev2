@@ -10,10 +10,12 @@ export const useTransaction = () => {
         limit: 10,
         transactionDetail: {} as ITransaction
     });
-    const GetList = async (page: number, limit: number, fields: string, filter: ITransactionFilter) => {
+    const GetList = async (page: number, limit: number,  filter: ITransactionFilter) => {
         state.isLoading = true
+        console.log('hihi',filter);
         try{
             const accessToken = (useCookie('auth_partner_token')?.value ?? "") as string;
+            
             if(!accessToken) throw createError({
                 statusCode: 401,
                 message: "Thiếu thông tin token!"
@@ -45,8 +47,38 @@ export const useTransaction = () => {
             state.isLoading = false
         }
     }   
+    const GetDetail = async (id: string) => {
+        state.isLoading = true
+        try{
+            const accessToken = (useCookie('auth_partner_token')?.value ?? "") as string;
+            
+            if(!accessToken) throw createError({
+                statusCode: 401,
+                message: "Thiếu thông tin token!"
+            });
+           
+            var header = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+            var rs = await $fetch('/api/transaction/detail?id='+id, {
+                method: 'GET',
+                headers: header
+            })
+            state.transactionDetail = rs || {};
+        }catch(error:any){
+            return createError({
+                statusCode: error.status,
+                message: error.message
+            });
+           
+        }finally{
+            state.isLoading = false
+        }
+    }
     return {
         state,
-        GetList
+        GetList,
+        GetDetail
     };
 }

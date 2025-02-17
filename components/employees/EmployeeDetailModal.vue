@@ -21,7 +21,6 @@
 
 <script setup lang="ts">
 import BaseModal from '@/components/BaseModal.vue';
-import type { ICity } from '~/types/City';
 import type { IPartner } from '~/types/Partner';
 
 const props = defineProps<{

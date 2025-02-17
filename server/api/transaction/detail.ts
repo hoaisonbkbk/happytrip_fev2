@@ -1,4 +1,4 @@
-import { TransactionService } from "~/services/TransactionService";
+import TransactionService from "~/services/TransactionService";
 
 export default defineEventHandler(async (event) => {
     // Đọc thông tin tử request

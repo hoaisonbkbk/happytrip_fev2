@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         console.log('query',query);
         // Gọi API lấy danh sách
         var rs = await OrderService.GetListWithFilter(query,headers,body);
-       
+       /** Lấy dữ liệu ở đây thôi. Nếu muốn xử lý nghiệp vụ và giấu API thì ở đây cũng được. Ở dây gọi tới service */
         if(!rs) throw createError({
             statusCode: 400,
             statusMessage: "Không tìm thấy dữ liệu!"

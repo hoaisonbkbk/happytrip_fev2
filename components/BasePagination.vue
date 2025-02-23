@@ -24,6 +24,31 @@
         </div>
     </div>
 </template>
+<style scoped>
+button {
+    @apply px-4 py-1 rounded-md shadow-sm;
+}
+
+button.active {
+    @apply bg-indigo-500 text-white;
+}
+
+button:not(.active) {
+    @apply bg-gray-200;
+}
+
+button:hover {
+    @apply bg-gray-300;
+}
+
+button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+}
+
+button:focus {
+    @apply outline-none ring-2 ring-indigo-500;
+}
+</style>
 
 <script setup lang="ts">
 import { computed, defineProps, defineEmits } from 'vue';

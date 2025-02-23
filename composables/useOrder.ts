@@ -6,7 +6,7 @@ export const useOrder = () => {
         orders: [] as IOrder[],
         totalRows: 0,
         totalPages: 0,
-
+        orderDetail: {} as IOrder
     });
     const GetList = async (page: number, limit: number, fields: string, filter: IOrderFilter) => {
         state.isLoading = true;
@@ -49,9 +49,41 @@ export const useOrder = () => {
             state.isLoading = false;
         }
     }
-
+    const GetDetail = async (id: string) => {
+        try{
+            state.isLoading = true;
+            // Đọc thông tin access token từ cookies
+            const accessToken = (useCookie('auth_partner_token')?.value ?? "") as string;
+            if(!accessToken) throw createError({
+                statusCode: 401,
+                statusMessage: "Thiếu thông tin token!"
+            });
+            var header = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+            // Gọi lên API Server Proxy để lấy dữ liệu
+            var rs = await $fetch('/api/order/'+id, {
+                method: 'GET',
+                headers: header
+            });
+            if (!rs) throw createError({
+                statusCode: 400,
+                statusMessage: "Không tìm thấy dữ liệu!"
+            })
+            state.orderDetail = rs;
+        }catch(error:any){
+            throw createError({
+                statusCode: error.status,
+                statusMessage: error.message
+            })
+        }finally{
+            state.isLoading = false;
+        }
+    }
     return {
         state,
-        GetList
+        GetList,
+        GetDetail
     }
 }

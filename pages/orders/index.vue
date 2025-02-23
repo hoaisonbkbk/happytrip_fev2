@@ -15,35 +15,45 @@
                     <div class="flex flex-row justify-between items-center gap-x-2">
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Điểm đón</span>
-                            <select name="" id="" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                            <select name="" id="" v-model="filter.city_diemdon" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
                                 <option>Lựa chọn</option>
                             </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Quận/Huyện đón</span>
-                            <select name="" id="" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                            <select  v-model="filter.district_depature" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
                                 <option>Lựa chọn</option>
                             </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Điểm trả</span>
-                            <select name="" id="" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                            <select name="" id="" v-model="filter.city_diemden" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
                                 <option>Lựa chọn</option>
                             </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Quận/Huyện trả</span>
-                            <select name="" id="" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                            <select name="" id="" v-model="filter.district_destination" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
                                 <option>Lựa chọn</option>
                             </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Thời gian</span>
-                            <input type="date" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
+                            <input type="date" range v-model="filter.from_date_of_destination" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
+                        </div>
+                        <div class="flex flex-row gap-x-2 items-center">
+                            <span class="text-sm font-medium">Trạng thái</span>
+                            <select name="" id="" v-model="filter.order_status" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                               
+                                <option value=0>Chờ tài xế</option>
+                                <option value=1>Đã nhận chuyến</option>
+                                <option value=2>Hoàn thành</option>
+                                <option value=3>Hủy thành</option>
+                            </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Từ khóa</span>
-                            <input type="text" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
+                            <input type="text" v-model="filter.keyword" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
                         </div>
 
 
@@ -123,13 +133,15 @@ const limit = ref(10);
 const page = ref(1);
 const { $showToast } = useNuxtApp();
 const orderStore = useOrder();
-const filter = ref({} as IOrderFilter);
+const filter = ref({order_status:0} as IOrderFilter);
 const selectedItemId = ref<string | null>(null);
 console.log(orderStore.state.orders);
 const handlePageChange = (newPage: number) => {
     page.value = newPage;
     fetchData();
 }
+
+
 const viewDetails = (id: string) => {
     selectedItemId.value = id;
 }
@@ -140,6 +152,13 @@ const handleLimitChange = (newLimit: number) => {
     limit.value = newLimit;
     fetchData();
 }
+// Sự thay đổi của filter
+watch(filter, () => {
+    page.value = 1;
+    fetchData();
+}, { deep: true });
+
+
 // Hàm xử lý lấy dữ liệu
 const fetchData = async () => {
     try {

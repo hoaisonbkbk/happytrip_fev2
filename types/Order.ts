@@ -35,7 +35,7 @@ export interface IOrderFilter {
     to_date_of_destination?: string;
     keyword?: string;
     ids?: string[];
-    status?: number;
+    order_status?: number;
     have_partner?: boolean;
     city_diemdon?: string;
     city_diemden?: string;

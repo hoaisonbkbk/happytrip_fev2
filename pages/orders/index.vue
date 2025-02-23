@@ -95,13 +95,15 @@
                                 </td>
 
                                 <td class="px-4 py-2 border-t border-b border-gray-300">
-                                    <ButtonDropdown :id="order.id" @viewDetails="viewDetails" @deleteItem="deleteItem" />
+                                    <UiButtonDropdown :id="order.id" @viewDetails="viewDetails"
+                                    @deleteItem="deleteItem" />
                                 </td>
                             </tr>
 
                             
                         </tbody>
                     </table>
+                    <DetailModal :itemId="selectedItemId" />
                     <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
                             v-model:limit="limit" v-model:currentPage="page" :totalPages="orderStore.state.totalPages"
                             :totalArrayLength="orderStore.state.orders.length" :totalRows="orderStore.state.totalRows" />
@@ -113,7 +115,7 @@
 <script setup lang="ts">
 import type { IOrderFilter } from '~/types/Order';
 import { useOrder } from '~/composables/useOrder';
-
+import DetailModal from '@/components/order/DetailModal.vue';
 definePageMeta({
     layout: "dashboard"
 });
@@ -122,10 +124,17 @@ const page = ref(1);
 const { $showToast } = useNuxtApp();
 const orderStore = useOrder();
 const filter = ref({} as IOrderFilter);
+const selectedItemId = ref<string | null>(null);
 console.log(orderStore.state.orders);
 const handlePageChange = (newPage: number) => {
     page.value = newPage;
     fetchData();
+}
+const viewDetails = (id: string) => {
+    selectedItemId.value = id;
+}
+const deleteItem = (id: string) => {
+    console.log(id);
 }
 const handleLimitChange = (newLimit: number) => {
     limit.value = newLimit;

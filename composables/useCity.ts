@@ -9,7 +9,7 @@ export const useCity = () => {
         limit: 10,
         cityDetail: {} as ICity
     });
-    const GetList = async (page: number, limit: number, fields: string, filter: ICityFilter) => {
+    const GetList = async (page: number, limit: number, fields: string, filter: Partial<ICityFilter>) => {
         state.isLoading = true
 
         try {
@@ -23,14 +23,15 @@ export const useCity = () => {
                     page: page,
                     limit: limit,
                     sort_by: 'name_desc',
-                    fields: fields
+                    fields: "id,name,status,districts"
                 },
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`
                 }
             });
-            if (!response || !response.data) {
+           
+            if (!response) {
                 throw {
                     status: 400,
 
@@ -39,7 +40,7 @@ export const useCity = () => {
             }
 
             // Lấy được dữ liệu
-            state.cities = response.data;
+            state.cities = response || [];
             state.totalRows = response.pagination?.count || 1;
             state.isLoading = false;
             state.page = page;

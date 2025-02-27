@@ -13,6 +13,7 @@ export interface ICityFilter extends IDistrict {
     ids?: string[];
     names?: string[];
     keyword?: string;
+    status?: boolean;
 }
 export interface IListCity{
     pagination?: IPagination;

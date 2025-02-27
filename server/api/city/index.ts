@@ -16,12 +16,7 @@ export default defineEventHandler(async (event) => {
         // Đọc thông tin query parameters
         const query = getQuery(event);
         // Đọc thiếu thông tin body trên request
-        if (!body) {
-            return {
-                status: 400,
-                message: "Chưa cung cấp dữ liệu filters"
-            }
-        }
+        console.log('query',query);
         if (!query) {
             return {
                 status: 400,

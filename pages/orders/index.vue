@@ -15,36 +15,51 @@
                     <div class="flex flex-row justify-between items-center gap-x-2">
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Điểm đón</span>
-                            <select name="" id="" v-model="filter.city_diemdon" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option>Lựa chọn</option>
+                            <select name="" id="" v-model="filter.city_diemdon"
+                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                                <option value="">Lựa chọn</option>
+                                <option v-for="city in cityStore.state.cities" :key="city.id" :value="city.id">{{
+                                    city.name }}</option>
                             </select>
+
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Quận/Huyện đón</span>
-                            <select  v-model="filter.district_depature" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option>Lựa chọn</option>
+                            <select v-model="filter.district_depature"
+                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                                <option value="">Lựa chọn</option>
+                                <option v-for="district in districtsDepature" :key="district.id"
+                                    :value="district.id">{{ district.name }}</option>
                             </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Điểm trả</span>
-                            <select name="" id="" v-model="filter.city_diemden" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option>Lựa chọn</option>
+                            <select name="" id="" v-model="filter.city_diemden"
+                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                                <option value="">Lựa chọn</option>
+                                <option v-for="city in cityStore.state.cities" :key="city.id" :value="city.id">{{
+                                    city.name }}</option>
                             </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Quận/Huyện trả</span>
-                            <select name="" id="" v-model="filter.district_destination" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option>Lựa chọn</option>
+                            <select name="" id="" v-model="filter.district_destination"
+                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+                                <option value="">Lựa chọn</option>
+                                <option v-for="district in districtsDestination" :key="district.id"
+                                    :value="district.id">{{ district.name }}</option>
                             </select>
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Thời gian</span>
-                            <input type="date" range v-model="filter.from_date_of_destination" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
+                            <input type="date" range v-model="filter.from_date_of_destination"
+                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Trạng thái</span>
-                            <select name="" id="" v-model="filter.order_status" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                               
+                            <select name="" id="" v-model="filter.order_status"
+                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
+
                                 <option value=0>Chờ tài xế</option>
                                 <option value=1>Đã nhận chuyến</option>
                                 <option value=2>Hoàn thành</option>
@@ -53,10 +68,9 @@
                         </div>
                         <div class="flex flex-row gap-x-2 items-center">
                             <span class="text-sm font-medium">Từ khóa</span>
-                            <input type="text" v-model="filter.keyword" class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
+                            <input type="text" v-model="filter.keyword"
+                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
                         </div>
-
-
                     </div>
 
                 </div>
@@ -84,16 +98,26 @@
 
                             <tr class="hover:bg-gray-100" v-for="order in orderStore.state.orders" :key="order.id">
                                 <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.short_id }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ formatDate(order.date_of_destination) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.departure?.city }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.destination?.city }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.name_service }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ formatCurrency(order.price_guest_after || order.price_guest || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ formatCurrency(order.price_guest_after || order.price_guest || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ formatCurrency(order.net_profit || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ formatCurrency(order.price_system || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">{{ order.partner?.full_name || "" }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">{{ order.creator?.user_name || "" }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                    formatDate(order.date_of_destination) }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.departure?.city
+                                    }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                    order.destination?.city }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.name_service }}
+                                </td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                    formatCurrency(order.price_guest_after || order.price_guest || 0) }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                    formatCurrency(order.price_guest_after || order.price_guest || 0) }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                    formatCurrency(order.net_profit || 0) }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                    formatCurrency(order.price_system || 0) }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">{{
+                                    order.partner?.full_name || "" }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">{{
+                                    order.creator?.user_name || "" }}</td>
                                 <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">
                                     <span class="px-2 py-1 rounded-md" :class="{
                                         'badge bg-yellow-500': order.status_name === 'Chờ tài xế',
@@ -106,17 +130,17 @@
 
                                 <td class="px-4 py-2 border-t border-b border-gray-300">
                                     <UiButtonDropdown :id="order.id" @viewDetails="viewDetails"
-                                    @deleteItem="deleteItem" />
+                                        @deleteItem="deleteItem" />
                                 </td>
                             </tr>
 
-                            
+
                         </tbody>
                     </table>
                     <DetailModal :itemId="selectedItemId" />
                     <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
-                            v-model:limit="limit" v-model:currentPage="page" :totalPages="orderStore.state.totalPages"
-                            :totalArrayLength="orderStore.state.orders.length" :totalRows="orderStore.state.totalRows" />
+                        v-model:limit="limit" v-model:currentPage="page" :totalPages="orderStore.state.totalPages"
+                        :totalArrayLength="orderStore.state.orders.length" :totalRows="orderStore.state.totalRows" />
                 </div>
             </div>
         </div>
@@ -133,7 +157,7 @@ const limit = ref(10);
 const page = ref(1);
 const { $showToast } = useNuxtApp();
 const orderStore = useOrder();
-const filter = ref({order_status:0} as IOrderFilter);
+const filter = ref({ order_status: 0, city_diemdon: "",city_diemden :"" } as IOrderFilter);
 const selectedItemId = ref<string | null>(null);
 console.log(orderStore.state.orders);
 const handlePageChange = (newPage: number) => {
@@ -152,6 +176,64 @@ const handleLimitChange = (newLimit: number) => {
     limit.value = newLimit;
     fetchData();
 }
+// Import cityService
+import { useCity } from '~/composables/useCity';
+
+// Declare city lists and city service
+const cityStore = useCity();
+const cities = ref([]);
+const districtsDepature = ref([]);
+const districtsDestination = ref([]);
+// Function to get city list
+const getCityList = async () => {
+    try {
+        await cityStore.GetList(1, 100, "id,name,status", { status: true, id: null });
+
+
+    } catch (error: any) {
+        console.error('Error fetching cities:', error);
+        $showToast(error.message, 'error');
+    }
+}
+
+const getDistrictsByCity = async (cityId, targetType) =>{
+    try{
+        // Lấy chi tiết của thành phố
+        await cityStore.GetDetail(cityId);
+        if(targetType === 'depature'){
+            districtsDepature.value = cityStore.state.cityDetail?.districts || [];
+        }else{
+            districtsDestination.value = cityStore.state.cityDetail?.districts || [];
+        }
+    }catch(error:any){
+        console.error('Error fetching districts:', error);
+        $showToast(error.message, 'error');
+    }
+}
+
+// Watch for changes in both city fields with a single watcher
+// Replace the watch function with watchEffect
+watchEffect(async () => {
+  // Handle city_diemdon changes
+  if (filter.value.city_diemdon) {
+    await getDistrictsByCity(filter.value.city_diemdon, 'depature');
+  } else {
+    districtsDepature.value = [];
+  }
+  
+  // Handle city_diemden changes
+  if (filter.value.city_diemden) {
+    await getDistrictsByCity(filter.value.city_diemden, 'destination');
+  } else {
+    districtsDestination.value = [];
+  }
+});
+
+// Call getCityList on component mount
+onMounted(() => {
+    getCityList();
+    fetchData();
+});
 // Sự thay đổi của filter
 watch(filter, () => {
     page.value = 1;
@@ -162,12 +244,10 @@ watch(filter, () => {
 // Hàm xử lý lấy dữ liệu
 const fetchData = async () => {
     try {
-        await orderStore.GetList(page.value, limit.value, '', filter.value);
-    } catch (error:any) {
+        await orderStore.GetList(page.value, limit.value, 'id,name,status', filter.value);
+    } catch (error: any) {
         $showToast(error.message, 'error');
     }
 }
-onMounted(() => {
-    fetchData();
-});
+
 </script>

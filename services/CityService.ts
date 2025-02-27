@@ -3,10 +3,11 @@ import { RestApi } from "./RestAPIService";
 
 export class CityService {
     // Lấy danh sách tỉnh thành
-    GetListWithFilter(headers?: Record<string, string>, query?: Record<string, any>, filter?: Record<string, any>)
+    async GetListWithFilter(headers?: Record<string, string>, query?: Record<string, any>, filter?: Record<string, any>)
     : Promise<IListCity> {
         try {
-            var rs =  RestApi<IListCity>('/city/v1/list', 'POST', { headers: headers, query: query, body: filter });
+            var rs = await RestApi<IListCity>('/city/list', 'POST', { headers: headers, query: query, body: filter });
+            console.log(rs);
             return rs;
         } catch (error: any) {
             console.error(error.response);

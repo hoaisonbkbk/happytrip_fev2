@@ -1,7 +1,7 @@
 <template>
     <div class="p-4">
         <div class="md-4">
-            <h3 class="text-2xl font-bold">Danh sách chyến đi</h3>
+            <h3 class="text-2xl font-bold">Danh sách chuyến đi</h3>
         </div>
 
         <div class="card">
@@ -10,134 +10,83 @@
             </div>
             <div class="card-body">
 
-
                 <div class="relative overflow-x-auto">
-                    <div class="flex flex-row justify-between items-center gap-x-2">
-                        <div class="flex flex-row gap-x-2 items-center">
-                            <span class="text-sm font-medium">Điểm đón</span>
-                            <select name="" id="" v-model="filter.city_diemdon"
-                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option value="">Lựa chọn</option>
-                                <option v-for="city in cityStore.state.cities" :key="city.id" :value="city.id">{{
-                                    city.name }}</option>
-                            </select>
+                    <div class="flex justify-end mb-4">
 
-                        </div>
-                        <div class="flex flex-row gap-x-2 items-center">
-                            <span class="text-sm font-medium">Quận/Huyện đón</span>
-                            <select v-model="filter.district_depature"
-                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option value="">Lựa chọn</option>
-                                <option v-for="district in districtsDepature" :key="district.id"
-                                    :value="district.id">{{ district.name }}</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-row gap-x-2 items-center">
-                            <span class="text-sm font-medium">Điểm trả</span>
-                            <select name="" id="" v-model="filter.city_diemden"
-                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option value="">Lựa chọn</option>
-                                <option v-for="city in cityStore.state.cities" :key="city.id" :value="city.id">{{
-                                    city.name }}</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-row gap-x-2 items-center">
-                            <span class="text-sm font-medium">Quận/Huyện trả</span>
-                            <select name="" id="" v-model="filter.district_destination"
-                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-                                <option value="">Lựa chọn</option>
-                                <option v-for="district in districtsDestination" :key="district.id"
-                                    :value="district.id">{{ district.name }}</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-row gap-x-2 items-center">
-                            <span class="text-sm font-medium">Thời gian</span>
-                            <input type="date" range v-model="filter.from_date_of_destination"
-                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
-                        </div>
-                        <div class="flex flex-row gap-x-2 items-center">
-                            <span class="text-sm font-medium">Trạng thái</span>
-                            <select name="" id="" v-model="filter.order_status"
-                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm">
-
-                                <option value=0>Chờ tài xế</option>
-                                <option value=1>Đã nhận chuyến</option>
-                                <option value=2>Hoàn thành</option>
-                                <option value=3>Hủy thành</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-row gap-x-2 items-center">
-                            <span class="text-sm font-medium">Từ khóa</span>
-                            <input type="text" v-model="filter.keyword"
-                                class="border border-gray-300 rounded-md px-3 py-1.5 text-sm" />
-                        </div>
+                        <button @click="openAddModal" class="btn-sm bg-blue-500 text-white px-4 py-2 rounded">Thêm
+                            mới</button>
                     </div>
-
                 </div>
+
+                <!-- Load filter -->
+                <FilterModal :cities="cityStore.state.cities" :districtsDepature="districtsDepature"
+                    :districtsDestination="districtsDestination" :filter="filter"
+                    :services="serviceStore.state.services" @update:filter="handleFilterChange" />
                 <div class="py-2"></div>
                 <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-left table table-bordered table-striped">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="px-4 py-2 font-medium">Mã chuyến</th>
-                                <th class="px-4 py-2 font-medium">Ngày</th>
-                                <th class="px-4 py-2 font-medium">Tỉnh đón</th>
-                                <th class="px-4 py-2 font-medium">Tỉnh trả</th>
-                                <th class="px-4 py-2 font-medium">Dịch vụ</th>
-                                <th class="px-4 py-2 font-medium">Thu khách</th>
-                                <th class="px-4 py-2 font-medium">Trả t.xế</th>
-                                <th class="px-4 py-2 font-medium">Hoa hồng</th>
-                                <th class="px-4 py-2 font-medium">Phí sàn</th>
-                                <th class="px-4 py-2 font-medium">Tài xế</th>
-                                <th class="px-4 py-2 font-medium">Người tạo</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Mã chuyến</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Ngày</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Tỉnh đón</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Tỉnh trả</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Dịch vụ</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Thu khách</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Trả t.xế</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Hoa hồng</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Phí sàn</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Tài xế</th>
+                                <th class="px-4 py-2 font-medium whitespace-nowrap">Người tạo</th>
                                 <th class="px-4 py-2 font-medium">Trạng thái</th>
                                 <th class="px-4 py-2 font-medium">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-
                             <tr class="hover:bg-gray-100" v-for="order in orderStore.state.orders" :key="order.id">
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.short_id }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
+                                    order.short_id }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     formatDate(order.date_of_destination) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.departure?.city
-                                    }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
+                                    order.departure?.city }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     order.destination?.city }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{ order.name_service }}
-                                </td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
+                                    order.name_service }}</td>
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     formatCurrency(order.price_guest_after || order.price_guest || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     formatCurrency(order.price_guest_after || order.price_guest || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     formatCurrency(order.net_profit || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     formatCurrency(order.price_system || 0) }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     order.partner?.full_name || "" }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">{{
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">{{
                                     order.creator?.user_name || "" }}</td>
-                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 ">
+                                <td class="px-4 py-2 border-t border-b border-gray-300 w-1/12 whitespace-nowrap">
                                     <span class="px-2 py-1 rounded-md" :class="{
                                         'badge bg-yellow-500': order.status_name === 'Chờ tài xế',
                                         'badge bg-green-500': order.status_name === 'Đã nhận đơn',
                                         'badge bg-red-500': order.status_name === 'Hủy đơn',
-                                        'badge bg-blue-500': order.status_name === 'Hoàn thành',
-                                        'badge bg-gray-500': order.status_name === 5,
+                                        'badge bg-blue-500': order.status_name === 'Hoàn thành'
+                                        
                                     }">{{ order.status_name }}</span>
                                 </td>
-
-                                <td class="px-4 py-2 border-t border-b border-gray-300">
+                                <td class="px-4 py-2 border-t border-b border-gray-300 whitespace-nowrap">
                                     <UiButtonDropdown :id="order.id" @viewDetails="viewDetails"
                                         @deleteItem="deleteItem" />
                                 </td>
                             </tr>
 
 
+
                         </tbody>
                     </table>
                     <DetailModal :itemId="selectedItemId" />
+                    <OrderAddModal ref="addModalRef" />
                     <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
                         v-model:limit="limit" v-model:currentPage="page" :totalPages="orderStore.state.totalPages"
                         :totalArrayLength="orderStore.state.orders.length" :totalRows="orderStore.state.totalRows" />
@@ -149,7 +98,16 @@
 <script setup lang="ts">
 import type { IOrderFilter } from '~/types/Order';
 import { useOrder } from '~/composables/useOrder';
+import { useService } from '~/composables/useService';
+
 import DetailModal from '@/components/order/DetailModal.vue';
+import OrderAddModal from '@/components/order/AddModal.vue';
+
+// Import cityService
+import { useCity } from '~/composables/useCity';
+import FilterModal from '~/components/order/FilterModal.vue';
+import type { IDistrict } from '~/types/District';
+
 definePageMeta({
     layout: "dashboard"
 });
@@ -157,15 +115,32 @@ const limit = ref(10);
 const page = ref(1);
 const { $showToast } = useNuxtApp();
 const orderStore = useOrder();
-const filter = ref({ order_status: 0, city_diemdon: "",city_diemden :"" } as IOrderFilter);
+const serviceStore = useService();
+const filter = ref({
+    order_status: 0,
+    city_diemdon: "",
+    service_type: "",
+    city_diemden: "",
+    district_depature: "",
+    district_destination: ""
+} as IOrderFilter);
+
+
 const selectedItemId = ref<string | null>(null);
-console.log(orderStore.state.orders);
+const districtsDepature = ref<IDistrict[]>([]);
+const districtsDestination = ref<IDistrict[]>([]);
+const addModalRef = ref<InstanceType<typeof OrderAddModal> | null>(null);
+
+// Declare city lists and city service
+const cityStore = useCity();
 const handlePageChange = (newPage: number) => {
     page.value = newPage;
     fetchData();
 }
 
-
+const handleFilterChange = async () => {
+    await fetchData();
+}
 const viewDetails = (id: string) => {
     selectedItemId.value = id;
 }
@@ -176,63 +151,71 @@ const handleLimitChange = (newLimit: number) => {
     limit.value = newLimit;
     fetchData();
 }
-// Import cityService
-import { useCity } from '~/composables/useCity';
+const openAddModal = () => {
+    if (addModalRef.value) {
+        addModalRef.value.open();
+    }
+}
 
-// Declare city lists and city service
-const cityStore = useCity();
-const cities = ref([]);
-const districtsDepature = ref([]);
-const districtsDestination = ref([]);
+
+
+
+
+
+
 // Function to get city list
 const getCityList = async () => {
     try {
         await cityStore.GetList(1, 100, "id,name,status", { status: true, id: null });
-
-
     } catch (error: any) {
         console.error('Error fetching cities:', error);
         $showToast(error.message, 'error');
     }
 }
 
-const getDistrictsByCity = async (cityId, targetType) =>{
-    try{
+// Lấy thông tin chi tiết của thành phố
+async function getDistrictsByCity(cityId: string, targetType: string) {
+    try {
         // Lấy chi tiết của thành phố
         await cityStore.GetDetail(cityId);
-        if(targetType === 'depature'){
+        if (targetType === 'depature') {
             districtsDepature.value = cityStore.state.cityDetail?.districts || [];
-        }else{
+        } else {
             districtsDestination.value = cityStore.state.cityDetail?.districts || [];
         }
-    }catch(error:any){
+    } catch (error: any) {
         console.error('Error fetching districts:', error);
         $showToast(error.message, 'error');
     }
 }
 
-// Watch for changes in both city fields with a single watcher
-// Replace the watch function with watchEffect
-watchEffect(async () => {
-  // Handle city_diemdon changes
-  if (filter.value.city_diemdon) {
-    await getDistrictsByCity(filter.value.city_diemdon, 'depature');
-  } else {
-    districtsDepature.value = [];
-  }
-  
-  // Handle city_diemden changes
-  if (filter.value.city_diemden) {
-    await getDistrictsByCity(filter.value.city_diemden, 'destination');
-  } else {
-    districtsDestination.value = [];
-  }
+watch([
+    () => filter.value.city_diemdon,
+    () => filter.value.city_diemden
+], ([newCityDiemdon, newCityDiemden], [oldCityDiemdon, oldCityDiemden]) => {
+    // Check which city changed and fetch districts accordingly
+    if (newCityDiemdon !== oldCityDiemdon) {
+        if (newCityDiemdon) {
+            getDistrictsByCity(newCityDiemdon, 'depature');
+        } else {
+            districtsDepature.value = [];
+        }
+    }
+
+    if (newCityDiemden !== oldCityDiemden) {
+        if (newCityDiemden) {
+            getDistrictsByCity(newCityDiemden, 'destination');
+        } else {
+            districtsDestination.value = [];
+        }
+    }
 });
 
 // Call getCityList on component mount
 onMounted(() => {
     getCityList();
     fetchData();
+    fetchService();
 });
 // Sự thay đổi của filter
 watch(filter, () => {
@@ -240,7 +223,14 @@ watch(filter, () => {
     fetchData();
 }, { deep: true });
 
-
+// 
+const fetchService = async () => {
+    try {
+        await serviceStore.GetList(1, 100, "", { id: null });
+    } catch (error: any) {
+        $showToast(error.message || 'An error occurred while fetching service', 'error');
+    }
+}
 // Hàm xử lý lấy dữ liệu
 const fetchData = async () => {
     try {

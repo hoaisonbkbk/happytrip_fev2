@@ -83,7 +83,7 @@ export class OrderService {
     }
 
     // Tài xế đồng ý chuyến đi
-    PartnerAcceptOrder(id:string,headers?: Record<string, string>): Promise<IOrder> {
+    PartnerAcceptOrder(id: string, headers?: Record<string, string>): Promise<IOrder> {
         try {
             return RestApi<IOrder>(`/order/${id}/accept`, "POST", { headers: headers });
         } catch (error: any) {

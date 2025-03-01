@@ -72,7 +72,7 @@
                                         'badge bg-green-500': order.status_name === 'Đã nhận đơn',
                                         'badge bg-red-500': order.status_name === 'Hủy đơn',
                                         'badge bg-blue-500': order.status_name === 'Hoàn thành'
-                                        
+
                                     }">{{ order.status_name }}</span>
                                 </td>
                                 <td class="px-4 py-2 border-t border-b border-gray-300 whitespace-nowrap">
@@ -86,7 +86,10 @@
                         </tbody>
                     </table>
                     <DetailModal :itemId="selectedItemId" />
-                    <OrderAddModal ref="addModalRef" />
+                    <OrderAddModal ref="addModalRef" 
+                        :cities="cities"  
+                        :services = "serviceStore.state.services"
+                    />
                     <BasePagination @update:page="handlePageChange" @update:limit="handleLimitChange"
                         v-model:limit="limit" v-model:currentPage="page" :totalPages="orderStore.state.totalPages"
                         :totalArrayLength="orderStore.state.orders.length" :totalRows="orderStore.state.totalRows" />
@@ -107,6 +110,7 @@ import OrderAddModal from '@/components/order/AddModal.vue';
 import { useCity } from '~/composables/useCity';
 import FilterModal from '~/components/order/FilterModal.vue';
 import type { IDistrict } from '~/types/District';
+import type { ICity } from '~/types/City';
 
 definePageMeta({
     layout: "dashboard"
@@ -130,7 +134,7 @@ const selectedItemId = ref<string | null>(null);
 const districtsDepature = ref<IDistrict[]>([]);
 const districtsDestination = ref<IDistrict[]>([]);
 const addModalRef = ref<InstanceType<typeof OrderAddModal> | null>(null);
-
+const cities = ref<ICity[]>([]);
 // Declare city lists and city service
 const cityStore = useCity();
 const handlePageChange = (newPage: number) => {
@@ -152,14 +156,11 @@ const handleLimitChange = (newLimit: number) => {
     fetchData();
 }
 const openAddModal = () => {
-    if (addModalRef.value) {
+    if (addModalRef.value && cities.value.length > 0) {
         addModalRef.value.open();
+        console.log('cities', cities.value);
     }
 }
-
-
-
-
 
 
 
@@ -167,6 +168,7 @@ const openAddModal = () => {
 const getCityList = async () => {
     try {
         await cityStore.GetList(1, 100, "id,name,status", { status: true, id: null });
+        cities.value = cityStore.state.cities;
     } catch (error: any) {
         console.error('Error fetching cities:', error);
         $showToast(error.message, 'error');

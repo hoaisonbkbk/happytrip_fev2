@@ -1,4 +1,5 @@
 import type { ICity, ICityFilter, IListCity } from "~/types/City";
+import type { IDistrict } from "~/types/District";
 
 export const useCity = () => {
     const state = reactive({
@@ -7,7 +8,9 @@ export const useCity = () => {
         totalRows: 0,
         page: 1,
         limit: 10,
-        cityDetail: {} as ICity
+        cityDetail: {} as ICity,
+        districtsDepature: [] as IDistrict[],
+        districtsDestination: [] as IDistrict[]
     });
     const GetList = async (page: number, limit: number, fields: string, filter: Partial<ICityFilter>) => {
         state.isLoading = true
@@ -30,7 +33,7 @@ export const useCity = () => {
                     'Authorization': `Bearer ${accessToken}`
                 }
             });
-           
+
             if (!response) {
                 throw {
                     status: 400,
@@ -97,16 +100,15 @@ export const useCity = () => {
             state.isLoading = false;
         } catch (error: any) {
             state.isLoading = false;
+            
             throw {
                 status: error.status || 500,
                 message: error.message || "Lỗi không xác định!"
             }
         }
-
-
     }
+
+    
     return { state, GetList, FixDistrict, FixStatus, GetDetail }
-
-
 
 }

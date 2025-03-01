@@ -85,9 +85,11 @@ export interface IQuickOrder{
     date_of_destination?:string;
     quantity?:number;
     departure_city?:string;
+    departure_city_id?:string;
     departure_dictrict?:string;
     departure_address_1?:string;
     destination_city?:string;
+    destination_city_id?:string;
     destination_dictrict?:string;
     destination_address_1?:string;
     price?:number;

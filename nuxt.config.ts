@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase: 'https://sysdev.happytrip.vn/api',
+      
     },
   },
 

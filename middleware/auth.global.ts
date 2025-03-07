@@ -5,8 +5,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if ((!accessToken || accessToken === "" || accessToken === undefined) && to.path !== '/login') {
         return navigateTo('/login', { replace: true });
     }
+    
     // Trường hợp có token mà vào lại trang login thì chuyen huong ve trang chủ
-    if (accessToken && to.path === '/login') {
+    if (accessToken && accessToken !== undefined && accessToken !== "" && to.path === '/login') {
         return navigateTo('/', { replace: true });
     }
 });

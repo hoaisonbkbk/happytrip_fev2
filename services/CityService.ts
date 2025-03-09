@@ -7,10 +7,8 @@ export class CityService {
     : Promise<IListCity> {
         try {
             var rs = await RestApi<IListCity>('/city/list', 'POST', { headers: headers, query: query, body: filter });
-            console.log(rs);
             return rs;
         } catch (error: any) {
-            console.error(error.response);
             // ✅ Trả về lỗi có `status` & `message`
             throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
         }
@@ -21,7 +19,6 @@ export class CityService {
         try {
             return RestApi<ICity>('/city/' + id, 'GET', { headers: headers });
         } catch (error: any) {
-            console.error(error.response);
             // ✅ Trả về lỗi có `status` & `message`
             throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
         }
@@ -32,7 +29,6 @@ export class CityService {
         try {
             return RestApi<void>('/city/' + id, 'DELETE', { headers: headers });
         } catch (error: any) {
-            console.error(error.response);
             // ✅ Trả về lỗi có `status` & `message`
             throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
         }

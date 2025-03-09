@@ -1,43 +1,39 @@
 import CityService from "~/services/CityService";
+import { useApiHandler } from "~/composables/useApiHandler";
 
 export default defineEventHandler(async (event) => {
+    const { getAuthHeaders, handleError } = useApiHandler();
+
     try {
-        // Lấy thông tin query
-        const query = getQuery(event);
-        const id = query.id as string;
-
-
-        // Đọc thông tin header lấy token
+        const { id } = getQuery(event);
         const accessToken = getHeader(event, 'Authorization');
-        const token = accessToken?.split(' ')[1];
-        // Tạo header
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+
+        if (!accessToken) {
+            throw createError({
+                statusCode: 401,
+                statusMessage: 'Unauthorized - Missing access token'
+            });
         }
-        // Kiểm tra xem id có tồn tại không
 
         if (!id) {
-            return {
-                status: 400,
-                message: 'ID không tồn tại'
-            }
+            throw createError({
+                statusCode: 400,
+                statusMessage: 'Missing city ID'
+            });
         }
 
-        // Lấy chi tiết thành phố
-        const cityDetail = await CityService.DetailById(id, headers);
+        const headers = getAuthHeaders(accessToken);
+        const cityDetail = await CityService.DetailById(id as string, headers);
+
         if (!cityDetail) {
-            return {
-                status: 400,
-                message: 'Không tìm thấy thành phố'
-            }
+            throw createError({
+                statusCode: 404,
+                statusMessage: 'Không tìm thấy thành phố'
+            });
         }
+
         return cityDetail;
     } catch (error: any) {
-        return {
-            status: error.status || 500,
-            message: error.message || "Lỗi không xác định!" 
-        }
+        handleError(error);
     }
-
 });

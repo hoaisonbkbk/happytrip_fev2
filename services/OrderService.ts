@@ -1,5 +1,6 @@
 import type { IListOrder, IOrder, IOrderDTO, IOrderFilter } from "~/types/Order";
 import { RestApi } from "./RestAPIService";
+import { createError } from "~/utils/createError";
 
 export class OrderService {
     // Lấy danh sách chuyến đi
@@ -7,9 +8,10 @@ export class OrderService {
         try {
             return RestApi("/order/list", "POST", { body: filter, headers: headers, query: query });
         } catch (error: any) {
-            console.log(error);
-            // ✅ Trả về lỗi có `status` & `message`
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
     // Lấy chi tiết
@@ -17,9 +19,10 @@ export class OrderService {
         try {
             return RestApi<IOrder>('/order/' + id, 'GET', { headers: headers });
         } catch (error: any) {
-            console.log(error);
-            // ✅ Trả về lỗi có `status` & `message`
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
     // Đếm số lượng theo bộ lọc
@@ -27,9 +30,10 @@ export class OrderService {
         try {
             return RestApi<number>("/order/counter", "POST", { body: filter, headers: headers });
         } catch (error: any) {
-            console.log(error);
-            // ✅ Trả về lỗi có `status` & `message`
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
 
@@ -38,9 +42,10 @@ export class OrderService {
         try {
             return RestApi("/order/export", "POST", { body: filter, headers: headers });
         } catch (error: any) {
-            console.log(error);
-            // ✅ Trả về lỗi có `status` & `message`
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
 
@@ -49,9 +54,10 @@ export class OrderService {
         try {
             return RestApi<IOrder>("/order/" + id, "PUT", { body: data, headers: headers });
         } catch (error: any) {
-            console.log(error);
-            // ✅ Trả về lỗi có `status` & `message`
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
     // Xóa
@@ -59,9 +65,10 @@ export class OrderService {
         try {
             return RestApi<void>("/order/" + id, "DELETE", { headers: headers });
         } catch (error: any) {
-            console.log(error);
-            // ✅ Trả về lỗi có `status` & `message`
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
     // Xem trạng thái chuyến đi
@@ -69,7 +76,10 @@ export class OrderService {
         try {
             return RestApi<IOrder>("/order/preview", "POST", { body: data, headers: headers });
         } catch (error: any) {
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
 
@@ -78,7 +88,10 @@ export class OrderService {
         try {
             return RestApi<IOrder>("/order/calc-order", "POST", { body: data, headers: headers });
         } catch (error: any) {
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
 
@@ -87,7 +100,10 @@ export class OrderService {
         try {
             return RestApi<IOrder>(`/order/${id}/accept`, "POST", { headers: headers });
         } catch (error: any) {
-            throw { status: error.status || 500, message: error.message || "Lỗi không xác định!" };
+            throw createError({
+                statusCode: error.status || 500,
+                statusMessage: error.message || "Lỗi không xác định!"
+            });
         }
     }
 }

@@ -14,6 +14,7 @@ export class OrderService {
             });
         }
     }
+
     // Lấy chi tiết
     GetDetail(id: string, headers?: Record<string, string>): Promise<IOrder> {
         try {
@@ -25,10 +26,13 @@ export class OrderService {
             });
         }
     }
-    // Đếm số lượng theo bộ lọc
-    GetCounter(filter: Partial<IOrderFilter>, headers?: Record<string, string>): Promise<number> {
+
+    async calculate(data: Partial<IOrderDTO>, headers?: Record<string, string>): Promise<IOrder> {
         try {
-            return RestApi<number>("/order/counter", "POST", { body: filter, headers: headers });
+            return await RestApi<IOrder>("/order/calc-order", "POST", {
+                body: data,
+                headers
+            });
         } catch (error: any) {
             throw createError({
                 statusCode: error.status || 500,
@@ -37,10 +41,9 @@ export class OrderService {
         }
     }
 
-    // Export
-    ExportAsync(filter: Partial<IOrderFilter>, headers?: Record<string, string>) {
+    async acceptOrder(id: string, headers?: Record<string, string>): Promise<IOrder> {
         try {
-            return RestApi("/order/export", "POST", { body: filter, headers: headers });
+            return await RestApi<IOrder>(`/order/${id}/accept`, "POST", { headers });
         } catch (error: any) {
             throw createError({
                 statusCode: error.status || 500,
@@ -49,32 +52,12 @@ export class OrderService {
         }
     }
 
-    // Update
-    UpdateOneAsync(id: string, data: Partial<IOrder>, headers?: Record<string, string>): Promise<IOrder> {
+    async getCounter(filter: Partial<IOrderFilter>, headers?: Record<string, string>): Promise<number> {
         try {
-            return RestApi<IOrder>("/order/" + id, "PUT", { body: data, headers: headers });
-        } catch (error: any) {
-            throw createError({
-                statusCode: error.status || 500,
-                statusMessage: error.message || "Lỗi không xác định!"
+            return await RestApi<number>("counter", "POST", { 
+                body: filter, 
+                headers 
             });
-        }
-    }
-    // Xóa
-    DeleteOneAsync(id: string, headers?: Record<string, string>): Promise<void> {
-        try {
-            return RestApi<void>("/order/" + id, "DELETE", { headers: headers });
-        } catch (error: any) {
-            throw createError({
-                statusCode: error.status || 500,
-                statusMessage: error.message || "Lỗi không xác định!"
-            });
-        }
-    }
-    // Xem trạng thái chuyến đi
-    PreviewAsync(data: Partial<IOrderDTO>, headers?: Record<string, string>): Promise<IOrder> {
-        try {
-            return RestApi<IOrder>("/order/preview", "POST", { body: data, headers: headers });
         } catch (error: any) {
             throw createError({
                 statusCode: error.status || 500,
@@ -83,10 +66,12 @@ export class OrderService {
         }
     }
 
-    // Tính toán lại
-    CalculateAsync(data: Partial<IOrderDTO>, headers?: Record<string, string>): Promise<IOrder> {
+    async export(filter: Partial<IOrderFilter>, headers?: Record<string, string>): Promise<void> {
         try {
-            return RestApi<IOrder>("/order/calc-order", "POST", { body: data, headers: headers });
+            return await RestApi<void>("/order/export", "POST", { 
+                body: filter, 
+                headers 
+            });
         } catch (error: any) {
             throw createError({
                 statusCode: error.status || 500,
@@ -95,10 +80,12 @@ export class OrderService {
         }
     }
 
-    // Tài xế đồng ý chuyến đi
-    PartnerAcceptOrder(id: string, headers?: Record<string, string>): Promise<IOrder> {
+    async preview(data: Partial<IOrderDTO>, headers?: Record<string, string>): Promise<IOrder> {
         try {
-            return RestApi<IOrder>(`/order/${id}/accept`, "POST", { headers: headers });
+            return await RestApi<IOrder>("/order/preview", "POST", { 
+                body: data, 
+                headers 
+            });
         } catch (error: any) {
             throw createError({
                 statusCode: error.status || 500,
@@ -107,4 +94,5 @@ export class OrderService {
         }
     }
 }
+
 export default new OrderService();

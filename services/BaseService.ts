@@ -1,34 +1,90 @@
 import { RestApi } from "./RestAPIService";
+import { createError } from "~/utils/createError";
 
 // Hàm base xử lý rest api bên ngoài
 // Ý tưởng là enpoint sẽ là baseUrl + "endpoint"
-export default class BaseService<T> {
-    protected endpoint: string;
+export abstract class BaseService<T> {
+    protected constructor(protected readonly endpoint: string) {}
 
-    constructor(endpoint: string) {
-        this.endpoint = endpoint;
-    }
-    // Các hàm căn bản Thêm/ Sửa/ Xóa/ Danh sách
-    async getAll(headers?: Record<string, string>, query?: Record<string, any>): Promise<T[]> {
-        return await RestApi<T[]>(this.endpoint, 'GET', { headers: headers, query: query });
-    }
-    // Lấy danh sách theo bộ lọc (filter)
-    async getAllWithFilter(headers?: Record<string, string>, query?: Record<string, any>, filter?: Record<string, any>): Promise<T[]> {
-        return await RestApi<T[]>(this.endpoint, 'POST', { headers: headers, query: query, body: filter });
+    protected handleError(error: any) {
+        if (error.statusCode) return error;
+        
+        return createError({
+            statusCode: error.status || 500,
+            statusMessage: error.message || 'Lỗi không xác định',
+            cause: error
+        });
     }
 
-    // Thêm mới
-    async create(data: Partial<T>): Promise<T> {
-        return await RestApi<T>(this.endpoint, 'POST', { body: data });
+    protected async request<R>(
+        path: string,
+        method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
+        options: {
+            body?: unknown;
+            query?: Record<string, string>;
+            headers?: Record<string, string>;
+        } = {}
+    ): Promise<R> {
+        try {
+            // Chuẩn hóa endpoint và path
+            const normalizedEndpoint = this.endpoint.startsWith('/') ? this.endpoint : `/${this.endpoint}`;
+            const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+            
+            const response = await RestApi<R>(
+                `${normalizedEndpoint}${normalizedPath}`, 
+                method, 
+                {
+                    ...options,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    }
+                }
+            );
+
+            if (!response) {
+                throw createError({
+                    statusCode: 404,
+                    statusMessage: 'Không tìm thấy dữ liệu'
+                });
+            }
+
+            return response;
+        } catch (error: any) {
+            throw this.handleError(error);
+        }
     }
 
-    // Cập nhật theo id
-    async update(id: string, data: Partial<T>): Promise<T> {
-        return await RestApi<T>(`${this.endpoint}/${id}`, 'PUT', { body: data });
+    // Generic CRUD operations với error handling
+    async getList(options?: {
+        filter?: Partial<T>;
+        query?: Record<string, string>;
+        headers?: Record<string, string>;
+    }): Promise<any> {
+        try {
+            return await this.request<any>("list", "POST", {
+                body: options?.filter,
+                query: options?.query,
+                headers: options?.headers
+            });
+        } catch (error: any) {
+            throw this.handleError(error);
+        }
     }
 
-    // Xóa theo id
-    async delete(id: string): Promise<void> {
-        return await RestApi<void>(`${this.endpoint}/${id}`, 'DELETE');
+    async getDetail(id: string, headers?: Record<string, string>): Promise<T> {
+        return this.request<T>(`/${id}`, "GET", { headers });
+    }
+
+    async create(data: Partial<T>, headers?: Record<string, string>): Promise<T> {
+        return this.request<T>("", "POST", { body: data, headers });
+    }
+
+    async update(id: string, data: Partial<T>, headers?: Record<string, string>): Promise<T> {
+        return this.request<T>(`/${id}`, "PUT", { body: data, headers });
+    }
+
+    async delete(id: string, headers?: Record<string, string>): Promise<void> {
+        return this.request<void>(`/${id}`, "DELETE", { headers });
     }
 }

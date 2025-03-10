@@ -8,6 +8,10 @@ export const RestApi = async <T>(
         headers?: Record<string, string>;
     } = {}
 ): Promise<T> => {
+    const timeout = 30000; // 30 seconds
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
     try {
         // Lấy URL base từ config runtime (nuxt.config.js)
         const config = useRuntimeConfig();
@@ -32,12 +36,21 @@ export const RestApi = async <T>(
         url += queryString;
 
         // Thực hiện gọi API
-        return await $fetch<T>(url, {
+        const response = await $fetch<T>(url, {
             method,
             headers: headersDefault,
             body: ["POST", "PUT", "PATCH"].includes(method) ? JSON.stringify(options.body) : undefined,
+            signal: controller.signal
         });
+        clearTimeout(timeoutId);
+        return response;
     } catch (error: any) {
+        if (error.name === 'AbortError') {
+            throw createError({
+                statusCode: 408,
+                statusMessage: 'Request timeout'
+            });
+        }
 
         // ✅ Kiểm tra lỗi trả về từ API
         if (error.response) {
@@ -51,6 +64,5 @@ export const RestApi = async <T>(
             status: 500,
             message: "Lỗi máy chủ, vui lòng thử lại!"
         }
-
     }
 }

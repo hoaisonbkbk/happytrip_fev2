@@ -86,11 +86,11 @@ export interface IQuickOrder{
     quantity?:number;
     departure_city?:string;
     departure_city_id?:string;
-    departure_dictrict?:string;
+    departure_district?:string;
     departure_address_1?:string;
     destination_city?:string;
     destination_city_id?:string;
-    destination_dictrict?:string;
+    destination_district?:string;
     destination_address_1?:string;
     price?:number;
     price_guest?:number;

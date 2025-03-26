@@ -13,11 +13,11 @@
           </select>
         </div>
         <!-- Quận / Huyện đón -->
-        <div class="form-group w-full md:w-1/3 px-2">
-          <select class="form-control" v-model="orderCTO.departure_dictrict">
-            <option value="">Quận/huyện đón</option>
-            <option v-for="district in districtsDepature" :key="district.name" :value="district.name">
-              {{ district.name }}</option>
+      <div class="form-group w-full md:w-1/3 px-2">
+        <select class="form-control" v-model="orderCTO.departure_district">
+          <option value="">Quận/huyện đón</option>
+          <option v-for="district in districtsDepature" :key="district.name" :value="district.name">
+            {{ district.name }}</option>
           </select>
         </div>
         <div class="form-group w-full md:w-1/3 px-2">
@@ -36,7 +36,7 @@
         </div>
         <!-- Quận / Huyện đón -->
         <div class="form-group w-full md:w-1/3 px-2">
-          <select class="form-control" v-model="orderCTO.destination_dictrict">
+          <select class="form-control" v-model="orderCTO.destination_district">
             <option value="">Quận/huyện đến</option>
             <option v-for="district in districtsDestination" :key="district.name" :value="district.name">
               {{ district.name }}</option>
@@ -92,8 +92,8 @@
               <h3 class="text-lg font-semibold mb-2">Thông tin chuyến đi:</h3>
               <ul class="listDetail list-disc pl-5 space-y-1">
                 <li>Khách hàng: {{ orderCTO.full_name || "Không xác định" }} / SĐT: {{ orderCTO.phone || "Không số điện thoại" }}</li>
-                <li>Điểm đón: <b> {{ orderCTO.departure_address_1 || "" }}  / {{ orderCTO.departure_dictrict }} / {{ orderCTO.departure_city }}</b></li>
-                <li>Điểm đón: <b> {{ orderCTO.destination_address_1 || "" }}  / {{ orderCTO.destination_dictrict }} / {{ orderCTO.destination_city }}</b></li>
+                <li>Điểm đón: <b> {{ orderCTO.departure_address_1 || "" }}  / {{ orderCTO.departure_district }} / {{ orderCTO.departure_city }}</b></li>
+                <li>Điểm đón: <b> {{ orderCTO.destination_address_1 || "" }}  / {{ orderCTO.destination_district }} / {{ orderCTO.destination_city }}</b></li>
                 <li>Giá chuyến đi: <b>{{ formatCurrency(orderStore.state.orderCalc.price_guest_after || 0) }}</b></li>
                 <li>Chiều dài: <b>{{ orderStore.state.orderCalc.distance }}km</b></li>
               </ul>
@@ -111,7 +111,7 @@
 <script setup lang="ts">
 
 import BaseModal from "@/components/BaseModal.vue";
-import { QuickOrder } from "~/models/Order";
+import { QuickOrder, type IQuickOrder } from "~/models/Order"; // Import IQuickOrder type
 // Lấy ref của modal. Gần như gọi thuộc tính của
 const modalRef = ref<InstanceType<typeof BaseModal> | null>(null);
 import type { ICity } from '~/types/City';
@@ -124,12 +124,12 @@ const districtsDestination = ref<IDistrict[]>([]);
 const orderCTO = reactive(new QuickOrder({
   id_service: "",
   departure_city: "",
-  departure_dictrict: "",
+  departure_district: "",
   departure_city_id: "",
   departure_address_1: "",
   destination_city_id: "",
   destination_city: "",
-  destination_dictrict: "",
+  destination_district: "",
   destination_address_1: "",
 }));
 
@@ -178,10 +178,7 @@ watch(() => orderCTO, async (newVal, oldVal) => {
 
     // Tính toán lại thông tin
     await orderStore.CalcOrder(orderCTO);
-    if (orderStore.state.orderCalc?.status === 400) {
-      $showToast(orderStore.state.orderCalc?.message || "Lỗi không xác định", 'error');
-      return;
-    }
+    // Error handling is done in the catch block below
     console.log('orderStore.state.orderDetail:', orderStore.state.orderCalc);
   } catch (error: any) {
     console.log('errorHihi:', error);

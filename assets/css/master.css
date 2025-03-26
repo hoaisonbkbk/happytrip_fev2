@@ -94,7 +94,6 @@ body {
     display: flex;
     width: 100%;
     align-items: stretch;
-    overflow-x: hidden
 }
 
 #body {
@@ -102,6 +101,11 @@ body {
     padding: 0;
     min-height: 100vh;
     transition: all 0.3s;
+    flex-grow: 1;
+}
+
+#sidebar {
+    flex-shrink: 0;
 }
 
 /*------------------------------------------------------------------
@@ -731,7 +735,7 @@ table.dataTable>tbody>tr.child ul.dtr-details {
 }
 
 .form-control:focus,
-.form-select:focus, {
+.form-select:focus {
     box-shadow: none !important;
     border: 2px solid #1e84c4;
     background-color: #FAFAFA;

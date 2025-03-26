@@ -23,7 +23,7 @@ export const usePartner = () => {
                 sort_by: 'name_desc'
             }
             // Gửi vào server/api để lấy dữ liệu
-            const response = await $fetch('/api/partner/list', {
+            const response = await $fetch<{ data: IPartner[], pagination: { total_page: number, count: number } }>('/api/partner/list', {
                 method: 'POST',
                 body: filter,
                 query: query,

@@ -37,10 +37,12 @@ export const useOrder = () => {
             if (!rs) throw createError({
                 statusCode: 400,
                 statusMessage: "Không tìm thấy dữ liệu!"
-            })
-            state.orders = rs.data || [];
+            });
+            // Ensure rs.data is an array of IOrder
+            state.orders = Array.isArray(rs.data) ? rs.data as IOrder[] : [];
+            // Check if pagination exists before accessing its properties
             state.totalRows = rs.pagination?.count || 1;
-            state.totalPages = rs.pagination?.total_page || 1;
+            state.totalPages = rs.pagination.total_page || 1;
         } catch (error: any) {
             throw createError({
                 statusCode: error.status,

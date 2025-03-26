@@ -1,5 +1,4 @@
 import OrderService from "~/services/OrderService";
-import { createError } from "~/utils/createError";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -7,34 +6,33 @@ export default defineEventHandler(async (event) => {
         const body = await readBody(event);
         const query = getQuery(event);
         const accessToken = getHeader(event, 'Authorization') as string;
-        
-        if (!accessToken) {
-            throw createError({
-                statusCode: 401,
-                statusMessage: "Unauthorized - Missing access token"
-            });
-        }
-
-        const headers = {
+        var headers = {
             'Content-Type': 'application/json',
             'Authorization': `${accessToken}`
-        };
+        }
+        // Kiểm tra dữ liệu bắn đến có hợp lệ không
+        if(!query) throw createError({
+            statusCode: 400,
+            statusMessage: "Thiếu thông tin query!"
+        });
+        if(!body) throw createError({
+            statusCode: 400,
+            statusMessage: "Thiếu thông tin body!"
+        });
 
         // Gọi API lấy danh sách
-        const response = await OrderService.GetListWithFilter(query, headers, body);
-        
-        if (!response) {
-            throw createError({
-                statusCode: 404,
-                statusMessage: "Không tìm thấy dữ liệu!"
-            });
-        }
-
-        return response;
+        var rs = await OrderService.GetListWithFilter(query,headers,body);
+        console.log('rs',rs);
+       /** Lấy dữ liệu ở đây thôi. Nếu muốn xử lý nghiệp vụ và giấu API thì ở đây cũng được. Ở dây gọi tới service */
+        if(!rs) throw createError({
+            statusCode: 400,
+            statusMessage: "Không tìm thấy dữ liệu!"
+        })
+        return rs;
     } catch (error: any) {
-        throw createError({
+        return createError({
             statusCode: error.status || 500,
-            statusMessage: error.message || "Lỗi không xác định!"
-        });
+            message: error.message || "Lỗi không xác định!"
+        })
     }
-});
+})
